@@ -1,14 +1,12 @@
 import './App.css'
-import RegistrationForm from './authorization/Register'
+import Authorization from './authorization/Authorization'
 
 function App() {
-  return (
-    <>
-      <RegistrationForm>
-        
-      </RegistrationForm>
-    </>
-  )
+    return (
+        <>
+            <Authorization/>
+        </>
+    )
 }
 
 export default App
