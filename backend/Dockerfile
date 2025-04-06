@@ -1,14 +1,17 @@
 # Stage#1: Встановлення залежностей
-FROM gradle:7.5.1-jdk11 AS dependency_stage
+FROM gradle:7.5.1-jdk17 AS dependency_stage
 LABEL maintainer="Danylo Kizilov <danylo.kizilov@infiz.khpi.edu.ua>"
 WORKDIR /app
 
 # Копіюємо лише файли конфігурації для установки залежностей
-COPY settings.gradle build.gradle /app/
-RUN gradle dependencies
+COPY settings.gradle.kts build.gradle.kts /app/
+#RUN gradle dependencies
+RUN gradle clean build --refresh-dependencies
+
+
 
 # Stage#2: Компіляція вихідного коду
-FROM gradle:7.5.1-jdk11 AS build_stage
+FROM gradle:7.5.1-jdk17 AS build_stage
 WORKDIR /app
 
 # Копіюємо файли проекту та завантажуємо залежності з попереднього етапу
