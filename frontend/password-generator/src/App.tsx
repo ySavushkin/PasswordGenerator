@@ -1,5 +1,5 @@
 import './App.css'
-import Authorization from './authorization/Authorization'
+import Authorization from './pages/authorization/Authorization'
 
 function App() {
     return (
