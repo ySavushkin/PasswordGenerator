@@ -4,9 +4,15 @@ LABEL maintainer="Danylo Kizilov <danylo.kizilov@infiz.khpi.edu.ua>"
 WORKDIR /app
 
 # Копіюємо лише файли конфігурації для установки залежностей
-COPY settings.gradle.kts build.gradle.kts /app/
+#COPY settings.gradle.kts build.gradle.kts /app/
+#RUN gradle clean build --refresh-dependencies
+COPY . /app
 #RUN gradle dependencies
-RUN gradle clean build --refresh-dependencies
+#RUN gradle --no-daemon dependencies
+RUN ./gradlew --no-daemon dependencies
+
+
+
 
 
 
@@ -35,19 +41,39 @@ RUN ls -l /app/build/libs/
 ENV GRADLE_OPTS="-Xmx2g"
 
 
+## Stage#3: Створення фінального контейнера з JAR-файлом
+#FROM amazoncorretto:15.0.2 AS final_stage
+#WORKDIR /app
+#
+## Копіюємо лише зібраний JAR файл з попереднього етапу
+#COPY --from=build_stage /app/build/libs/demo-0.0.1-SNAPSHOT.jar demo.jar
+#
+#
+## Відкриваємо порт для додатка
+#EXPOSE 8080
+#
+## Точка входу — запуск JAR файлу
+#CMD ["java", "-jar", "/app/demo.jar"]
+
+
 # Stage#3: Створення фінального контейнера з JAR-файлом
-FROM amazoncorretto:15.0.2 AS final_stage
+#FROM amazoncorretto:15.0.2 AS final_stage
+FROM amazoncorretto:17 AS final_stage
 WORKDIR /app
 
-# Копіюємо лише зібраний JAR файл з попереднього етапу
-COPY --from=build_stage /app/build/libs/demo-0.0.1-SNAPSHOT.jar demo.jar
+# Копіюємо ВСІ jar файли з build_stage
+COPY --from=build_stage /app/build/libs/*.jar /app/
 
-
-# Відкриваємо порт для додатка
+# Відкриваємо порт
 EXPOSE 8080
 
-# Точка входу — запуск JAR файлу
-CMD ["java", "-jar", "/app/demo.jar"]
+# Запускаємо перший .jar файл в директорії
+#CMD ["sh", "-c", "java -jar /app/*.jar"]
+CMD ["java", "-jar", "/app/PasswordGenerator-0.0.1-SNAPSHOT.jar"]
+
+
+
+
 
 
 #   Для Stage#1 (Встановлення залежностей):

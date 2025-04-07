@@ -43,4 +43,10 @@ networks:
   app_network:
     driver: bridge
 
-#docker compose up --build -d
+#  depends_on:
+#      -
+
+
+#  docker compose down -v
+#  docker compose up --build -d
+# docker exec -it password_gen_db psql -U user_n -d PasswordGenerator_DB -c "\dt"
