@@ -5,15 +5,14 @@ WORKDIR /app
 
 # Копіюємо лише файли конфігурації для установки залежностей
 #COPY settings.gradle.kts build.gradle.kts /app/
-#RUN gradle clean build --refresh-dependencies
 COPY . /app
+
+# Встановлюємо Python та Locust для тестування
+RUN apt-get update && apt-get install -y python3 python3-pip
+RUN pip3 install locust
+
 #RUN gradle dependencies
-#RUN gradle --no-daemon dependencies
 RUN ./gradlew --no-daemon dependencies
-
-
-
-
 
 
 # Stage#2: Компіляція вихідного коду
@@ -24,9 +23,7 @@ WORKDIR /app
 COPY . /app
 COPY --from=dependency_stage /app/.gradle /app/.gradle
 
-
 # Компілюємо проект і створюємо JAR файл
-#RUN gradlew build -s
 RUN ./gradlew build -s
 
 #Якщо буде потрібно скіпнути тести!
@@ -41,23 +38,7 @@ RUN ls -l /app/build/libs/
 ENV GRADLE_OPTS="-Xmx2g"
 
 
-## Stage#3: Створення фінального контейнера з JAR-файлом
-#FROM amazoncorretto:15.0.2 AS final_stage
-#WORKDIR /app
-#
-## Копіюємо лише зібраний JAR файл з попереднього етапу
-#COPY --from=build_stage /app/build/libs/demo-0.0.1-SNAPSHOT.jar demo.jar
-#
-#
-## Відкриваємо порт для додатка
-#EXPOSE 8080
-#
-## Точка входу — запуск JAR файлу
-#CMD ["java", "-jar", "/app/demo.jar"]
-
-
 # Stage#3: Створення фінального контейнера з JAR-файлом
-#FROM amazoncorretto:15.0.2 AS final_stage
 FROM amazoncorretto:17 AS final_stage
 WORKDIR /app
 
@@ -68,11 +49,7 @@ COPY --from=build_stage /app/build/libs/*.jar /app/
 EXPOSE 8080
 
 # Запускаємо перший .jar файл в директорії
-#CMD ["sh", "-c", "java -jar /app/*.jar"]
 CMD ["java", "-jar", "/app/PasswordGenerator-0.0.1-SNAPSHOT.jar"]
-
-
-
 
 
 
