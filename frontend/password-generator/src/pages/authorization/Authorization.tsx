@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import RegistrationForm from './Register'
-import SignUpForm from './SignUp'
-import NavigationToggle from '../../components/NavigationToggle';
+import RegistrationForm from './components/register/Register'
+import LoginPage from './components/login/Login'
+import NavigationToggle from './components/NavigationToggle';
 
 const Authorization: React.FC = () => {
     return (
@@ -11,7 +11,7 @@ const Authorization: React.FC = () => {
                 isRegistration ? (
                     <Route path="/register" element={<RegistrationForm/>}/>
                 ) : ( 
-                    <Route path="/login" element={<SignUpForm/>}/> 
+                    <Route path="/login" element={<LoginPage/>}/> 
                 )
                 <Route path="*" element={<Navigate to="/register" />} />
             </Routes>
