@@ -1,13 +1,7 @@
 import React from "react";
 import './Register.css';
 import { useState } from "react";
-
-interface UserData {
-    userName: string;
-    email: string;
-    password: string;
-    repeatPassword: string;
-}
+import { UserData } from "../../../../data/UserData";
 
 const RegistrationForm: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
