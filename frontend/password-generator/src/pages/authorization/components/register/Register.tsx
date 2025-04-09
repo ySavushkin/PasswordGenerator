@@ -2,6 +2,7 @@ import React from "react";
 import './Register.css';
 import { useState } from "react";
 import { UserData } from "../../../../data/UserData";
+import { Link } from "react-router-dom";
 
 const RegistrationForm: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
@@ -80,6 +81,12 @@ const RegistrationForm: React.FC = () => {
                 <br/>
                 <button type="submit" className="btn btn-primary">Create Account</button>
             </form>
+            <label className="mt-2">
+                Already have an account?
+                <Link to="/auth/login" className="btn btn-link underline px-0">
+                    Login
+                </Link>
+            </label>
         </div>
     );
 };

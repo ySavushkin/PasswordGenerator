@@ -1,11 +1,12 @@
+import { BrowserRouter } from 'react-router-dom'
 import './App.css'
-import Authorization from './pages/authorization/Authorization'
+import AppRouter from './router/AppRouter'
 
 function App() {
     return (
-        <>
-            <Authorization/>
-        </>
+        <BrowserRouter>
+            <AppRouter/>
+        </BrowserRouter>
     )
 }
 

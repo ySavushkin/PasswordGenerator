@@ -1,6 +1,7 @@
 import React from "react";
 import './Login.css';
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface UserData {
     email: string;
@@ -29,7 +30,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="bd-example">
-            <h1>Sign Up</h1>
+            <h1>Welcome Back</h1>
             <br/>
             <form onSubmit={handleSubmit}>          
                 <div className="mb-3">
@@ -53,8 +54,14 @@ const LoginPage: React.FC = () => {
                         onChange={handleChange}/>
                 </div>
                 <br/>
-                <button type="submit" className="btn btn-primary">Sign Up</button>
+                <button type="submit" className="btn btn-primary">Login</button>
             </form>
+            <label className="mt-2">
+                Have no account?
+                <Link to="/auth/register" className="btn btn-link underline px-0">
+                    Register
+                </Link>
+            </label>
         </div>
     );
 };
