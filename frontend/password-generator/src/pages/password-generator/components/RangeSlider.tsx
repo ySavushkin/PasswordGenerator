@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { RangeSliderProp } from "../../../props/RangeSliderProp";
+import React, { useState } from 'react';
+import { RangeSliderProp } from '../../../props/RangeSliderProp';
 
 const RangeSlider: React.FC<RangeSliderProp> = ({ setCurrentValue }) => {
-    const [value, setValue] = useState(16); 
-  
+    const [value, setValue] = useState(16);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setValue(Number(newValue));
         setCurrentValue(Number(newValue));
     };
-  
+
     return (
         <input
             type="range"
@@ -21,6 +21,6 @@ const RangeSlider: React.FC<RangeSliderProp> = ({ setCurrentValue }) => {
             onChange={handleChange}
         />
     );
-  };
+};
 
 export default RangeSlider;

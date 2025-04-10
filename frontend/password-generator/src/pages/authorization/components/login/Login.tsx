@@ -1,6 +1,6 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 
 interface UserData {
@@ -10,8 +10,8 @@ interface UserData {
 
 const LoginPage: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
-        email: "",
-        password: "",
+        email: '',
+        password: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,14 +19,14 @@ const LoginPage: React.FC = () => {
         setUserData(prev => ({
             ...prev,
             [name]: value,
-        }))
-    }
+        }));
+    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         console.log(userData);
-    }
+    };
 
     return (
         <>
@@ -52,9 +52,9 @@ const LoginPage: React.FC = () => {
                                 <path d="M126.4009,254.5555v109.44a27.08,27.08,0,0,0,27,27H358.5991a27.077,27.077,0,0,0,27-27v-109.44a27.0777,27.0777,0,0,0-27-27H153.4009A27.0805,27.0805,0,0,0,126.4009,254.5555ZM328,288.13a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,328,288.13Zm-72,0a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,256,288.13Zm-72,0a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,184,288.13Z"></path>
                                 <path d="M343.6533,207.756V171.7538a87.6533,87.6533,0,0,0-175.3066,0V207.756H188.14V171.7538a67.86,67.86,0,0,1,135.7208,0V207.756Z"></path>
                             </svg>
-                            <input 
-                                type="password" 
-                                className="input-field" 
+                            <input
+                                type="password"
+                                className="input-field"
                                 placeholder="Password"
                                 name="password"
                                 value={userData.password}

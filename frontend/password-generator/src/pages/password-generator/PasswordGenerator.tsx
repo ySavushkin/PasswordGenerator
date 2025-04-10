@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import RangeSlider from "./components/RangeSlider";
+import React, { useState } from 'react';
+import RangeSlider from './components/RangeSlider';
 
 const PasswordGenerator: React.FC = () => {
 
@@ -18,7 +18,7 @@ const PasswordGenerator: React.FC = () => {
             <RangeSlider setCurrentValue={handleDataFromRange}/>
 
             <input type="number" className="form-control" id="exampleInputText" value={rangeValue}/>
-            
+
             <div className="checkbox text-white">
                 <label><input type="checkbox" value=""/>Uppercase</label>
             </div>
