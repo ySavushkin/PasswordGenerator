@@ -5,9 +5,9 @@ const RangeSlider: React.FC<RangeSliderProp> = ({ setCurrentValue }) => {
     const [value, setValue] = useState(16); 
   
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      setValue(Number(newValue));
-      setCurrentValue(Number(newValue));
+        const newValue = e.target.value;
+        setValue(Number(newValue));
+        setCurrentValue(Number(newValue));
     };
   
     return (
