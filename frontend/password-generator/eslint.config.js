@@ -18,6 +18,15 @@ export default defineConfig([
     },
     rules: {
       "react/react-in-jsx-scope": "off",
+      "no-console": "warn",
+      "no-eval": "error",
+      "quotes": ["error", "single"],                    // одинарные кавычки
+      "indent": ["error", 4],                           // 4 пробела
+      "semi": ["error", "always"],                      // всегда ставить точку с запятой
+      "comma-dangle": ["error", "always-multiline"],    // запятая в конце многострочных объектов/массивов
+      "no-trailing-spaces": "error",                    // запрет пробелов в конце строки
+      "eol-last": ["error", "always"],                  // пустая строка в конце файла
+      "no-multiple-empty-lines": ["error", { "max": 1 }], // максимум одна пустая строка
     },
   },
 ]);
