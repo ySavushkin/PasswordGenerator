@@ -31,6 +31,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.postgresql:postgresql:42.7.5")
+    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
+    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
 }
 
 tasks.withType<Test> {
