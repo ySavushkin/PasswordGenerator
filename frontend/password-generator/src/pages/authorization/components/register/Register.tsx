@@ -3,6 +3,7 @@ import '../../Authorization.css';
 import { useState } from 'react';
 import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
+import { RoutePaths } from '../../../../router/RoutePaths';
 
 const RegistrationForm: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
@@ -100,7 +101,7 @@ const RegistrationForm: React.FC = () => {
                     <button className="button"> Create Account </button>
                     <label className="hint">
                         Already have an account?
-                        <Link to="/auth/login"> Log in </Link>
+                        <Link to={RoutePaths.LOGIN}> Log in </Link>
                     </label>
                 </form>
             </div>

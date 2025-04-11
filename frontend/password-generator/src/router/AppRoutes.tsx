@@ -3,12 +3,13 @@ import LoginPage from '../pages/authorization/components/login/Login';
 import { RouterConfig } from './RouterConfig';
 import { Navigate } from 'react-router-dom';
 import PasswordGenerator from '../pages/password-generator/PasswordGenerator';
+import { RoutePaths } from './RoutePaths';
 
 const appRoutes: RouterConfig[] = [
-    { path: 'auth/register', element: <Register />, title: 'Register' },
-    { path: 'auth/login', element: <LoginPage />, title: 'Log In' },
-    { path: 'password-generator', element: <PasswordGenerator />, title: 'Password Generator' },
-    { path: '*', element: <Navigate to="/auth/register" replace/>, title: 'Authorization'},
+    { path: RoutePaths.REGISTER, element: <Register />, title: 'Register' },
+    { path: RoutePaths.LOGIN, element: <LoginPage />, title: 'Log In' },
+    { path: RoutePaths.PASSWORD_GENERATOR, element: <PasswordGenerator />, title: 'Password Generator' },
+    { path: RoutePaths.CATCH_ALL, element: <Navigate to="/auth/register" replace/>, title: 'Authorization'},
 ];
 
 export default appRoutes;

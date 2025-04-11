@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Authorization.css';
+import { RoutePaths } from '../../../../router/RoutePaths';
 
 interface UserData {
     email: string;
@@ -64,7 +65,7 @@ const LoginPage: React.FC = () => {
                         <button className="button"> Login </button>
                         <label className="hint">
                             Have no account?
-                            <Link to="/auth/register"> Register </Link>
+                            <Link to={RoutePaths.REGISTER}> Register </Link>
                         </label>
                     </form>
                 </div>
