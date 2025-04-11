@@ -24,7 +24,7 @@ const RegistrationForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (checkPassword()) {
+        if (!isPasswordConfirmed()) {
             console.log('ERROR');
             return;
         }
@@ -32,8 +32,8 @@ const RegistrationForm: React.FC = () => {
         console.log(userData);
     };
 
-    const checkPassword = (): boolean => {
-        return userData.password !== userData.repeatPassword;
+    const isPasswordConfirmed = (): boolean => {
+        return userData.password === userData.repeatPassword;
     };
 
     return (
