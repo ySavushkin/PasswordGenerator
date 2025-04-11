@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
 import RangeSlider from './components/RangeSlider';
 import './PasswordGenerator.css';
+import { PasswordSettings } from './components/password-options/PasswordSettings';
 
 const PasswordGenerator: React.FC = () => {
 
-    const [rangeValue, setRangeValue] = useState<number>(16);
+    const [passwordSize, setPasswordSize] = useState<number>(16);
 
-    const handleDataFromRange = (data: number) => {
-        setRangeValue(data);
+    const handlePasswordSize = (data: number | React.ChangeEvent<HTMLInputElement>) => {
+        if (typeof data === 'number') {
+            setPasswordSize(data);
+        } else {
+            setPasswordSize(Number(data.target.value));
+        }
     };
 
     return (
         <>
             <label htmlFor="customRange" className="form-label text-white">
-                Password Length <strong></strong>
+                Password Length
             </label>
 
-            <RangeSlider setCurrentValue={handleDataFromRange}/>
+            <RangeSlider setCurrentValue={handlePasswordSize}/>
 
-            <input type="number" className="form-control" id="exampleInputText" value={rangeValue}/>
+            <input
+                type="number"
+                className="form-control"
+                id="exampleInputText"
+                value={passwordSize}
+                onChange={handlePasswordSize}/>
 
-            <div className="checkbox text-white">
-                <label><input type="checkbox" value=""/>Uppercase</label>
-            </div>
-            <div className="checkbox text-white">
-                <label><input type="checkbox" value=""/>Lowercase</label>
-            </div>
-            <div className="checkbox text-white disabled">
-                <label><input type="checkbox" value="" disabled/>Numbers</label>
-            </div>
-            <div className="checkbox text-white disabled">
-                <label><input type="checkbox" value="" disabled/>Symbols</label>
-            </div>
+            <PasswordSettings/>
         </>
     );
 };
