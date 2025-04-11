@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import RangeSlider from './components/RangeSlider';
+import './PasswordGenerator.css';
 
 const PasswordGenerator: React.FC = () => {
 
