@@ -1,0 +1,16 @@
+# Ігноруємо директорії та файли, які не потрібні в образі
+.gradle/
+build/
+data/
+*.log
+*.md
+*.iml
+.idea/
+*.class
+*.jar
+Dockerfile
+docker-compose.yml
+*.yml
+*.yaml
+**/test/
+**/tests/

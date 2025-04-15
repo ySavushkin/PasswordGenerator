@@ -1,0 +1,56 @@
+#
+#version: '3'
+#
+#services:
+#  locust-master:
+#    image: locustio/locust
+#    container_name: locust-master
+#    ports:
+#      - "8089:8089"  # Web UI
+#    volumes:
+#      - ./locust/locustfile.py:/mnt/locust/locustfile.py
+#    command: >
+#      -f /mnt/locust/locustfile.py
+#      --master
+#    depends_on:
+#      - demo
+#    environment:
+#      - LOCUST_MODE=master
+#      - LOCUST_HOST=http://demo:8080
+#    networks:
+#      - app_network
+#
+#  locust-worker:
+#    image: locustio/locust
+#    container_name: locust-worker
+#    depends_on:
+#      - locust-master
+#    volumes:
+#      - ./locust/locustfile.py:/mnt/locust/locustfile.py
+#    command: >
+#      -f /mnt/locust/locustfile.py
+#      --worker
+#      --master-host locust-master
+#    environment:
+#      - LOCUST_MODE=worker
+#      - LOCUST_HOST=http://demo:8080
+#    networks:
+#      - app_network
+#
+#networks:
+#  app_network:
+#    external: true  # Підключення до мережі основного docker-compose.yml
+#
+#
+#
+#  #Запуск:
+#  #Створи спільну мережу:
+#  #docker network create app_network
+#
+#  #Запусти бекенд і базу:
+#  #docker compose up --build -d
+#
+#  #Запусти Locust master/worker:
+#  #docker compose -f docker-compose-locust.yml up --build -d
+#
+#  #Веб-інтерфейс: http://localhost:8089

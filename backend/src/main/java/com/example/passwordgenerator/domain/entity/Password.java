@@ -1,4 +1,4 @@
-package com.example.passwordgenerator.entity;
+package com.example.passwordgenerator.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,4 +33,5 @@ public class Password {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
 }

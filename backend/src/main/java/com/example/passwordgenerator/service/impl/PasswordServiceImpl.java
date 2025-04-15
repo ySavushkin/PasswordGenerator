@@ -1,22 +1,20 @@
 package com.example.passwordgenerator.service.impl;
 
-import com.example.passwordgenerator.entity.Password;
+import com.example.passwordgenerator.domain.entity.Password;
 import com.example.passwordgenerator.repository.PasswordRepository;
 import com.example.passwordgenerator.service.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PasswordServiceImpl implements PasswordService {
 
-    public PasswordRepository passwordRepository;
+    private final PasswordRepository passwordRepository;
 
-    @Autowired
-    public PasswordServiceImpl(PasswordRepository passwordRepository){
-        this.passwordRepository = passwordRepository;
-    }
     @Override
     public Optional<Password> findPasswordById(Long id) {
         return passwordRepository.findById(id);
@@ -31,4 +29,5 @@ public class PasswordServiceImpl implements PasswordService {
     public Password savePassword(Password password) {
         return passwordRepository.save(password);
     }
+
 }

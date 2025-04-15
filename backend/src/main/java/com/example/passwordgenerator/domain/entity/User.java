@@ -1,4 +1,4 @@
-package com.example.passwordgenerator.entity;
+package com.example.passwordgenerator.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,14 +6,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
+@Entity
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "users")
 public class User {
 
@@ -34,7 +32,7 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     @JsonIgnore
     private List<Password> passwords;
+
 }
