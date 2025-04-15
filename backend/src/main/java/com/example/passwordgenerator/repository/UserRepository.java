@@ -1,6 +1,6 @@
 package com.example.passwordgenerator.repository;
 
-import com.example.passwordgenerator.entity.User;
+import com.example.passwordgenerator.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
