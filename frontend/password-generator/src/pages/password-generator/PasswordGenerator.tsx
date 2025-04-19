@@ -18,6 +18,18 @@ const PasswordGenerator: React.FC = () => {
 
     return (
         <>
+            <div className="mb-5 password-container">
+                <input
+                    type="password"
+                    className="form-control rounded-0 password-input"
+                    id="passwordInput"
+                />
+                <div className="progress rounded-0 password-progress">
+                    <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
+                        aria-valuemin={0} aria-valuemax={100}></div>
+                </div>
+            </div>
+
             <label htmlFor="customRange" className="form-label text-white">
                 Password Length
             </label>
