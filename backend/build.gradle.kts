@@ -34,8 +34,29 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.postgresql:postgresql:42.7.5")
+
+
+    //Змінив версію на 2.0.2
     implementation("jakarta.validation:jakarta.validation-api:2.0.2")
+
+
     implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+
+    //Додав для DTO тесту
+    implementation("javax.el:javax.el-api:3.0.0")
+    implementation("org.glassfish:javax.el:3.0.0")
+
+    //Додав для PasswordRepositoryTest
+    testImplementation("com.h2database:h2")
+
+    //Додав для implTest
+    //??????
+
+    //Додав для ServiceTest
+    //????
+
+
+
 }
 
 tasks.withType<Test> {
