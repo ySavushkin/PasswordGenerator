@@ -20,7 +20,6 @@ const PasswordGenerator: React.FC = () => {
         <>
             <div className="mb-5 password-container">
                 <input
-                    type="password"
                     className="form-control rounded-0 password-input"
                     id="passwordInput"
                 />
@@ -30,15 +29,20 @@ const PasswordGenerator: React.FC = () => {
                 </div>
             </div>
 
-            <label htmlFor="customRange" className="form-label text-white">
-                Password Length
-            </label>
+            <div className="PasswordCard">
+                <div className="PasswordForm">
+                <label htmlFor="customRange" className="PasswordLength">
+                    Password Length
+                </label>
 
-            <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
 
-            <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
 
-            <PasswordSettings/>
+                <PasswordSettings/>
+                </div>
+            </div>
+            <br></br>
         </>
     );
 };
