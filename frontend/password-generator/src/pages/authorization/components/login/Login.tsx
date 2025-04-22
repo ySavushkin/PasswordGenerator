@@ -26,6 +26,8 @@ const LoginPage: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        //TODO http://localhost:8080/passwordGenerator/auth/login
+
         console.log(userData);
     };
 

@@ -28,9 +28,19 @@ const RegistrationForm: React.FC = () => {
             alert("Passwords don't match!");
             return;
         }
+<<<<<<< HEAD
     
         try {
             const response = await fetch('http://localhost:5174/api/auth/register', {
+=======
+
+        console.log(userData);
+
+        //TODO вынести в файл где будет две функции одна на регистер вторая на логин
+
+        try {
+            const response = await fetch('http://localhost:8080/passwordGenerator/auth/register', {
+>>>>>>> aca3e419eeac50808319d7f83b6ba7ed5a7426a4
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,6 +48,7 @@ const RegistrationForm: React.FC = () => {
                 body: JSON.stringify({
                     username: userData.userName,
                     email: userData.email,
+<<<<<<< HEAD
                     password: userData.password,
                 }),
             });
@@ -45,6 +56,15 @@ const RegistrationForm: React.FC = () => {
             if (response.ok) {
                 alert('Registration successful!');
                 window.location.href = '/generator'; // или замени на useNavigate
+=======
+                    password: userData.password
+                })
+            });
+
+            if (response.ok) {
+                alert('Registration successful!');
+                window.location.href = '/auth/login';
+>>>>>>> aca3e419eeac50808319d7f83b6ba7ed5a7426a4
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Registration failed');
