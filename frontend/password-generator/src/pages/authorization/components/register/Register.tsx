@@ -21,7 +21,7 @@ const RegistrationForm: React.FC = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!isPasswordConfirmed()) {
@@ -30,6 +30,33 @@ const RegistrationForm: React.FC = () => {
         }
 
         console.log(userData);
+
+        //TODO вынести в файл где будет две функции одна на регистер вторая на логин
+
+        try {
+            const response = await fetch('http://localhost:8080/passwordGenerator/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: userData.userName,
+                    email: userData.email,
+                    password: userData.password
+                })
+            });
+
+            if (response.ok) {
+                alert('Registration successful!');
+                window.location.href = '/auth/login';
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred during registration');
+        }
     };
 
     const isPasswordConfirmed = (): boolean => {
