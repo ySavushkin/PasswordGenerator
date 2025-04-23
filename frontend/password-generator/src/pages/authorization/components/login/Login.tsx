@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         //TODO http://localhost:8080/passwordGenerator/auth/login
@@ -37,22 +37,21 @@ const LoginPage: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: userData.userName,
                     email: userData.email,
-                    password: userData.password
-                })
+                    password: userData.password,
+                }),
             });
 
             if (response.ok) {
-                alert('join successful!');
-                window.location.href = '/auth/login';
+                alert('Login successful!');
+                navigate('/generator'); // Перенаправление после логина
             } else {
                 const errorData = await response.json();
-                alert(errorData.message || 'joining failed');
+                alert(errorData.message || 'Login failed');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred during joining');
+            alert('An error occurred during login');
         }
     };
 
