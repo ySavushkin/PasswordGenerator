@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
+import { useNavigate } from 'react-router-dom';
 
 interface UserData {
     email: string;
@@ -10,6 +11,8 @@ interface UserData {
 }
 
 const LoginPage: React.FC = () => {
+    const navigate = useNavigate();
+
     const [userData, setUserData] = useState<UserData>({
         email: '',
         password: '',
@@ -26,10 +29,6 @@ const LoginPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //TODO http://localhost:8080/passwordGenerator/auth/login
-
-        console.log(userData);
-
         try {
             const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
                 method: 'POST',
@@ -44,7 +43,7 @@ const LoginPage: React.FC = () => {
 
             if (response.ok) {
                 alert('Login successful!');
-                navigate('/generator'); // Перенаправление после логина
+                navigate(RoutePaths.PASSWORD_GENERATOR);
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Login failed');

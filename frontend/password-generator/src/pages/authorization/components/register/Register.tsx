@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm: React.FC = () => {
+    const navigate = useNavigate();
+
     const [userData, setUserData] = useState<UserData>({
         userName: '',
         email: '',
@@ -29,8 +32,6 @@ const RegistrationForm: React.FC = () => {
             return;
         }
 
-        console.log(userData);
-
         //TODO вынести в файл где будет две функции одна на регистер вторая на логин
 
         try {
@@ -48,7 +49,7 @@ const RegistrationForm: React.FC = () => {
 
             if (response.ok) {
                 alert('Registration successful!');
-                window.location.href = '/auth/login';
+                navigate(RoutePaths.PASSWORD_GENERATOR);
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Registration failed');
