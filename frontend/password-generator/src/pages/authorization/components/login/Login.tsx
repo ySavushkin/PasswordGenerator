@@ -29,6 +29,31 @@ const LoginPage: React.FC = () => {
         //TODO http://localhost:8080/passwordGenerator/auth/login
 
         console.log(userData);
+
+        try {
+            const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: userData.userName,
+                    email: userData.email,
+                    password: userData.password
+                })
+            });
+
+            if (response.ok) {
+                alert('join successful!');
+                window.location.href = '/auth/login';
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'joining failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred during joining');
+        }
     };
 
     return (
