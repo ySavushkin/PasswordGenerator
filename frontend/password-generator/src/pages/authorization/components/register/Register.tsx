@@ -46,8 +46,9 @@ const RegistrationForm: React.FC = () => {
                     password: userData.password
                 })
             });
+            const responseText = await response.text();
 
-            if (response.ok) {
+            if (responseText === 'User registered successfully') {
                 alert('Registration successful!');
                 navigate(RoutePaths.PASSWORD_GENERATOR);
             } else {

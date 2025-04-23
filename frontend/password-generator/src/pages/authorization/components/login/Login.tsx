@@ -40,8 +40,9 @@ const LoginPage: React.FC = () => {
                     password: userData.password,
                 }),
             });
+            const responseText = await response.text();
 
-            if (response.ok) {
+            if (responseText === 'Login successful') {
                 alert('Login successful!');
                 navigate(RoutePaths.PASSWORD_GENERATOR);
             } else {
