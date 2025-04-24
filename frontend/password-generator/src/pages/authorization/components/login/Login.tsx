@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
-import { useNavigate } from 'react-router-dom';
 import { handleAuthResult, sendAuthRequest } from '../../AuthService';
 
 interface UserData {
@@ -13,8 +12,6 @@ interface UserData {
 
 const LoginPage: React.FC = () => {
     const url: string = 'http://localhost:8080/passwordGenerator/auth/login';
-
-    const navigate = useNavigate();
 
     const [userData, setUserData] = useState<UserData>({
         email: '',
