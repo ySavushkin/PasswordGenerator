@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useNavigate } from 'react-router-dom';
+import { handleAuthResult, sendAuthRequest } from '../../AuthService';
 
 interface UserData {
     email: string;
@@ -11,6 +12,8 @@ interface UserData {
 }
 
 const LoginPage: React.FC = () => {
+    const url: string = 'http://localhost:8080/passwordGenerator/auth/login';
+
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState<UserData>({
@@ -29,30 +32,12 @@ const LoginPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        try {
-            const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: userData.email,
-                    password: userData.password,
-                }),
-            });
-            const responseText = await response.text();
+        const loginResult = await sendAuthRequest(url, {
+            email: userData.email,
+            password: userData.password,
+        });
 
-            if (responseText === 'Login successful') {
-                alert('Login successful!');
-                navigate(RoutePaths.PASSWORD_GENERATOR);
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Login failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred during login');
-        }
+        handleAuthResult(loginResult, 'Login successful', RoutePaths.PASSWORD_GENERATOR);
     };
 
     return (

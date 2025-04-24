@@ -5,8 +5,11 @@ import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useNavigate } from 'react-router-dom';
+import { handleAuthResult, sendAuthRequest } from '../../AuthService';
 
 const RegistrationForm: React.FC = () => {
+    const url: string = 'http://localhost:8080/passwordGenerator/auth/register';
+
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState<UserData>({
@@ -32,33 +35,13 @@ const RegistrationForm: React.FC = () => {
             return;
         }
 
-        //TODO вынести в файл где будет две функции одна на регистер вторая на логин
+        const registerResult = await sendAuthRequest(url, {
+            username: userData.userName,
+            email: userData.email,
+            password: userData.password,
+        });
 
-        try {
-            const response = await fetch('http://localhost:8080/passwordGenerator/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: userData.userName,
-                    email: userData.email,
-                    password: userData.password
-                })
-            });
-            const responseText = await response.text();
-
-            if (responseText === 'User registered successfully') {
-                alert('Registration successful!');
-                navigate(RoutePaths.PASSWORD_GENERATOR);
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Registration failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred during registration');
-        }
+        handleAuthResult(registerResult, 'User registered successfully', RoutePaths.PASSWORD_GENERATOR);
     };
     
 
