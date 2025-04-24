@@ -11,7 +11,7 @@ const PasswordGenerator: React.FC = () => {
     const max: number = 32;
 
     const handlePasswordSize = (data: React.ChangeEvent<HTMLInputElement>) => {
-        let size: number = Number(data.target.value);
+        const size: number = Number(data.target.value);
 
         setPasswordSize(size);
     };
@@ -31,15 +31,15 @@ const PasswordGenerator: React.FC = () => {
 
             <div className="PasswordCard">
                 <div className="PasswordForm">
-                <label htmlFor="customRange" className="PasswordLength">
+                    <label htmlFor="customRange" className="PasswordLength">
                     Password Length
-                </label>
+                    </label>
 
-                <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                    <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
 
-                <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                    <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
 
-                <PasswordSettings/>
+                    <PasswordSettings/>
                 </div>
             </div>
             <br></br>

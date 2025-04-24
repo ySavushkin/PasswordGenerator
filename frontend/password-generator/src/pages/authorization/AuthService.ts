@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 type AuthRequestData = {
     email: string;
@@ -13,7 +13,7 @@ type AuthResponse = {
 
 export async function sendAuthRequest(
     url: string,
-    data: AuthRequestData
+    data: AuthRequestData,
 ): Promise<AuthResponse> {
     try {
         const response = await fetch(url, {
@@ -36,7 +36,7 @@ export async function sendAuthRequest(
 export function handleAuthResult(
     result: AuthResponse,
     successMessage: string,
-    navigateTo: string
+    navigateTo: string,
 ): void {
     const navigate = useNavigate();
 

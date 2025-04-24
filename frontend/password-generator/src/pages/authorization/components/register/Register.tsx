@@ -26,9 +26,9 @@ const RegistrationForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
+
         if (!isPasswordConfirmed()) {
-            alert("Passwords don't match!");
+            alert('Passwords don\'t match!');
             return;
         }
 
@@ -40,7 +40,6 @@ const RegistrationForm: React.FC = () => {
 
         handleAuthResult(registerResult, 'User registered successfully', RoutePaths.PASSWORD_GENERATOR);
     };
-    
 
     const isPasswordConfirmed = (): boolean => {
         return userData.password === userData.repeatPassword;
