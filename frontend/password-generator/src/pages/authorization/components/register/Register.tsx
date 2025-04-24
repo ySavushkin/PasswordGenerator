@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
-import { handleAuthResult, sendAuthRequest } from '../../AuthService';
+import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 
 const RegistrationForm: React.FC = () => {
     const url: string = 'http://localhost:8080/passwordGenerator/auth/register';
+    const handleAuthResult = useHandleAuthResult();
 
     const [userData, setUserData] = useState<UserData>({
         userName: '',

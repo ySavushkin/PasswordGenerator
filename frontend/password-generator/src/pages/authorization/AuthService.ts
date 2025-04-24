@@ -33,17 +33,21 @@ export async function sendAuthRequest(
     }
 }
 
-export function handleAuthResult(
-    result: AuthResponse,
-    successMessage: string,
-    navigateTo: string,
-): void {
+export function useHandleAuthResult() {
     const navigate = useNavigate();
 
-    if (result.success && result.message === successMessage) {
-        alert(successMessage);
-        navigate(navigateTo);
-    } else {
-        alert(result.message);
-    }
+    const handleAuthResult = (
+        result: AuthResponse,
+        successMessage: string,
+        navigateTo: string,
+    ): void => {
+        if (result.success && result.message === successMessage) {
+            alert(successMessage);
+            navigate(navigateTo);
+        } else {
+            alert(result.message);
+        }
+    };
+
+    return handleAuthResult;
 }
