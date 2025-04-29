@@ -3,6 +3,8 @@ import PasswordSizeRange from './components/PasswordSizeRange';
 import './PasswordGenerator.css';
 import { PasswordSettings } from './components/password-options/PasswordSettings';
 import PasswordSizeInput from './components/PasswordSizeInput';
+import PasswordIntro from './components/PasswordIntro';
+
 
 const PasswordGenerator: React.FC = () => {
 
@@ -18,31 +20,35 @@ const PasswordGenerator: React.FC = () => {
 
     return (
         <>
-            <div className="mb-5 password-container">
-                <input
-                    className="form-control rounded-0 password-input"
-                    id="passwordInput"
-                />
-                <div className="progress rounded-0 password-progress">
-                    <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
-                        aria-valuemin={0} aria-valuemax={100}></div>
-                </div>
-            </div>
+        <PasswordIntro />
+        <br></br>
+        <div className="PasswordCard">
+            <div className="PasswordForm">
 
-            <div className="PasswordCard">
-                <div className="PasswordForm">
-                    <label htmlFor="customRange" className="PasswordLength">
-                    Password Length
-                    </label>
+                    <div className="mb-5 password-container">
+                        <input
+                            className="form-control rounded-0 password-input"
+                            id="passwordInput"
+                        />
+                        <div className="progress rounded-0 password-progress">
+                            <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
+                                aria-valuemin={0} aria-valuemax={100}></div>
+                        </div>
+                    </div>
 
-                    <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                <label htmlFor="customRange" className="PasswordLength">
+                Password Length
+                </label>
 
-                    <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
 
+                <div className="checkbox-grid">
                     <PasswordSettings/>
                 </div>
             </div>
-            <br></br>
+        </div>
+        <br></br>
         </>
     );
 };
