@@ -1,29 +1,26 @@
-import { useState } from 'react';
 import { CharOptions } from './CharOptions';
 import { CheckboxOption } from './CheckboxOption';
 import { charCheckboxConfigs } from './СharCheckboxConfigs';
 
-export const PasswordSettings = () => {
-    const [charOptions, setCharOptions] = useState<CharOptions>(CharOptions.None);
+interface PasswordSettingsProps {
+    flags: number;
+    toggleFlag: (option: CharOptions) => void;
+}
 
-    const toggleOption = (option: CharOptions) => {
-        setCharOptions(prev => (prev & option) === option ? prev & ~option : prev | option,
-        );
-        console.log(option);
-    };
-
-    const options = charCheckboxConfigs.map(({ label, value }: CheckboxOption) => {
-        return (
-            <div className="checkbox text-white" key={value}>
+export const PasswordSettings: React.FC<PasswordSettingsProps> = ({ flags, toggleFlag }) => {
+    return (
+        <>
+            {charCheckboxConfigs.map((config: CheckboxOption) => (
+                <div className="checkbox text-white" key={config.value}>
                 <label>
                     <input
                         type='checkbox'
-                        checked={(charOptions & value) === value}
-                        onChange={() => toggleOption(value)} />{label}
+                        checked={(flags & config.value) !== 0}
+                        onChange={() => toggleFlag(config.value)} />
+                        {config.label}
                 </label>
             </div>
-        );
-    });
-
-    return <> {options}</>;
+            ))};
+        </>
+    );
 };
