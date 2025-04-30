@@ -5,9 +5,9 @@ import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
+import { API_ROUTES } from '../../../../constants/ApiRoutes';
 
 const RegistrationForm: React.FC = () => {
-    const url: string = 'http://localhost:8080/passwordGenerator/auth/register';
     const handleAuthResult = useHandleAuthResult();
 
     const [userData, setUserData] = useState<UserData>({
@@ -33,7 +33,7 @@ const RegistrationForm: React.FC = () => {
             return;
         }
 
-        const registerResult = await sendAuthRequest(url, {
+        const registerResult = await sendAuthRequest(API_ROUTES.register, {
             username: userData.userName,
             email: userData.email,
             password: userData.password,

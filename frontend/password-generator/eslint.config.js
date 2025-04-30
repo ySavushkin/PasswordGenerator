@@ -27,6 +27,7 @@ export default defineConfig([
       "no-trailing-spaces": "error",                    // запрет пробелов в конце строки
       "eol-last": ["error", "always"],                  // пустая строка в конце файла
       "no-multiple-empty-lines": ["error", { "max": 1 }], // максимум одна пустая строка
+      "react/prop-types": "off", 
     },
   },
 ]);

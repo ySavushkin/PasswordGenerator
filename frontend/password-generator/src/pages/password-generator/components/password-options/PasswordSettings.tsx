@@ -12,14 +12,14 @@ export const PasswordSettings: React.FC<PasswordSettingsProps> = ({ flags, toggl
         <>
             {charCheckboxConfigs.map((config: CheckboxOption) => (
                 <div className="checkbox text-white" key={config.value}>
-                <label>
-                    <input
-                        type='checkbox'
-                        checked={(flags & config.value) !== 0}
-                        onChange={() => toggleFlag(config.value)} />
+                    <label>
+                        <input
+                            type='checkbox'
+                            checked={(flags & config.value) !== 0}
+                            onChange={() => toggleFlag(config.value)} />
                         {config.label}
-                </label>
-            </div>
+                    </label>
+                </div>
             ))};
         </>
     );

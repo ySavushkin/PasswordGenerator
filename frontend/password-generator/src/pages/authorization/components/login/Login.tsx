@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
+import { API_ROUTES } from '../../../../constants/ApiRoutes';
 
 interface UserData {
     email: string;
@@ -11,7 +12,6 @@ interface UserData {
 }
 
 const LoginPage: React.FC = () => {
-    const url: string = 'http://localhost:8080/passwordGenerator/auth/login';
     const handleAuthResult = useHandleAuthResult();
 
     const [userData, setUserData] = useState<UserData>({
@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const loginResult = await sendAuthRequest(url, {
+        const loginResult = await sendAuthRequest(API_ROUTES.login, {
             email: userData.email,
             password: userData.password,
         });
