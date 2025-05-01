@@ -25,7 +25,12 @@ const PasswordGenerator: React.FC = () => {
     };
 
     const toggleFlag = (flag: CharOptions) => {
-        setSelectedFlags(prev => prev ^ flag);
+        setSelectedFlags(prev => {
+            if ((prev ^ flag) === CharOptions.None)
+                return prev;
+
+            return prev ^ flag;
+        });
     };
 
     useEffect(() => {
