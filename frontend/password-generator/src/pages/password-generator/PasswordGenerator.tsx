@@ -7,6 +7,7 @@ import PasswordIntro from './components/PasswordIntro';
 import { CharOptions } from './components/password-options/CharOptions';
 import { fetchGeneratedPassword } from './services/PasswordService';
 import { API_ROUTES } from '../../constants/ApiRoutes';
+import BubbleBackground from './components/BubbleBackground';
 
 const PasswordGenerator: React.FC = () => {
     const [generatedPassword, setGeneratedPassword] = useState<string>('');
@@ -51,6 +52,7 @@ const PasswordGenerator: React.FC = () => {
 
     return (
         <>
+            <BubbleBackground/>
             <PasswordIntro/>
             <br></br>
             <div className="PasswordCard">
