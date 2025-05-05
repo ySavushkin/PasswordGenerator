@@ -25,4 +25,13 @@ public class AuthController {
     public String login(@RequestBody UserDTO userDTO) {
         return loginService.loginUser(userDTO);
     }
+
+
+//    //Додав для тесту
+//    @GetMapping("/")
+//    public String home() {
+//        return "Welcome to the Password Generator API. Use /passwordGenerator/auth/register or /passwordGenerator/auth/login for authentication.";
+//    }
+
+
 }

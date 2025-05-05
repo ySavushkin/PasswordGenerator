@@ -68,3 +68,6 @@ CMD ["java", "-jar", "/app/PasswordGenerator-0.0.1-SNAPSHOT.jar"]
 #Перевірте, чи файл існує, скориставшись командою docker run з тим !!!
 #самим ім'ям образу password-gen-app-build:
 #docker run --rm password-gen-app-build ls -l /app/build/libs/
+
+
+#docker exec -it 95f4aef60d241c8281251416a3203f4a3e7951cd844137b024a7048e79f7e024 /bin/bash
