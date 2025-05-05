@@ -55,31 +55,48 @@ const PasswordGenerator: React.FC = () => {
             <BubbleBackground/>
             <PasswordIntro/>
             <br></br>
-            <div className="PasswordCard">
-                <div className="PasswordForm">
+            <div className="d-flex flex-row justify-content-between">
+                <div className="PasswordCard">
+                    <div className="PasswordForm">
 
-                    <div className="mb-5 password-container">
-                        <input
-                            className="form-control rounded-0 password-input"
-                            id="passwordInput"
-                            value={generatedPassword}
-                            onChange={(e) => setGeneratedPassword(e.target.value)}
-                        />
-                        <div className="progress rounded-0 password-progress">
-                            <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
-                                aria-valuemin={0} aria-valuemax={100}></div>
+                        <div className="mb-5 password-container">
+                            <input
+                                className="form-control rounded-0 password-input"
+                                id="passwordInput"
+                                value={generatedPassword}
+                                onChange={(e) => setGeneratedPassword(e.target.value)}
+                            />
+                            <div className="progress rounded-0 password-progress">
+                                <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
+                                    aria-valuemin={0} aria-valuemax={100}></div>
+                            </div>
+                        </div>
+
+                        <label htmlFor="customRange" className="PasswordLength">
+                    Password Length
+                        </label>
+
+                        <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                        <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+
+                        <div className="checkbox-grid">
+                            <PasswordSettings flags={selectedFlags} toggleFlag={toggleFlag}/>
                         </div>
                     </div>
-
-                    <label htmlFor="customRange" className="PasswordLength">
-                    Password Length
-                    </label>
-
-                    <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
-                    <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
-
-                    <div className="checkbox-grid">
-                        <PasswordSettings flags={selectedFlags} toggleFlag={toggleFlag}/>
+                </div>
+                <div className="PasswordCard">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm">
+                            One of three columns
+                            </div>
+                            <div className="col-sm">
+                            One of three columns
+                            </div>
+                            <div className="col-sm">
+                            One of three columns
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
