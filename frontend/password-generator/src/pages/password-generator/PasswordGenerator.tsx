@@ -8,6 +8,7 @@ import { CharOptions } from './components/password-options/CharOptions';
 import { fetchGeneratedPassword } from './services/PasswordService';
 import { API_ROUTES } from '../../constants/ApiRoutes';
 import BubbleBackground from './components/BubbleBackground';
+import PasswordTable from './components/PasswordTable';
 
 const PasswordGenerator: React.FC = () => {
     const [generatedPassword, setGeneratedPassword] = useState<string>('');
@@ -85,19 +86,7 @@ const PasswordGenerator: React.FC = () => {
                     </div>
                 </div>
                 <div className="PasswordCard">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm">
-                            One of three columns
-                            </div>
-                            <div className="col-sm">
-                            One of three columns
-                            </div>
-                            <div className="col-sm">
-                            One of three columns
-                            </div>
-                        </div>
-                    </div>
+                    <PasswordTable/>
                 </div>
             </div>
             <br></br>
