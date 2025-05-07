@@ -3,12 +3,12 @@ import PasswordSizeRange from './components/PasswordSizeRange';
 import './PasswordGenerator.css';
 import { PasswordSettings } from './components/password-options/PasswordSettings';
 import PasswordSizeInput from './components/PasswordSizeInput';
-import PasswordIntro from './components/PasswordIntro';
+import PasswordIntro from './components/password-intro/PasswordIntro';
 import { CharOptions } from './components/password-options/CharOptions';
 import { fetchGeneratedPassword } from './services/PasswordService';
 import { API_ROUTES } from '../../constants/ApiRoutes';
-import BubbleBackground from './components/BubbleBackground';
-import PasswordTable from './components/PasswordTable';
+import BubbleBackground from './components/bubble-background/BubbleBackground';
+import PasswordTable from './components/password-table/PasswordTable';
 
 const PasswordGenerator: React.FC = () => {
     const [generatedPassword, setGeneratedPassword] = useState<string>('');
