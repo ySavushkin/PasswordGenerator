@@ -53,17 +53,21 @@ const PasswordGenerator: React.FC = () => {
 
     return (
         <>
-            <BubbleBackground/>
-            <PasswordIntro/>
+            <BubbleBackground />
+            <PasswordIntro />
             <br></br>
+
             <div className="d-flex flex-row justify-content-between">
                 <div className="PasswordCard">
                     <div className="PasswordForm">
 
-                        <div className="mb-5 password-container">
+                        <div className="mb-3 password-container">
                             <input
                                 className="form-control rounded-0 password-input"
                                 id="passwordInput"
+                                type="text"
+                                placeholder="Введіть ваш пароль"
+                                minLength={min}
                                 value={generatedPassword}
                                 onChange={(e) => setGeneratedPassword(e.target.value)}
                             />
@@ -74,19 +78,31 @@ const PasswordGenerator: React.FC = () => {
                         </div>
 
                         <label htmlFor="customRange" className="PasswordLength">
-                    Password Length
+                            Password Length
                         </label>
 
-                        <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
-                        <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize}/>
+                        <PasswordSizeRange min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize} />
+                        <PasswordSizeInput min={min} max={max} current={passwordSize} setCurrentSize={handlePasswordSize} />
 
                         <div className="checkbox-grid">
-                            <PasswordSettings flags={selectedFlags} toggleFlag={toggleFlag}/>
+                            <PasswordSettings flags={selectedFlags} toggleFlag={toggleFlag} />
+                        </div>
+
+                        <div className="row ms-0 me-0">
+                            <div className='col-8 ps-0 pe-0'>
+                                <input
+                                    className="form-control"
+                                    id="passwordNote"
+                                    placeholder="Нотатка (необовʼязково)"
+                                />
+                            </div>
+                            <button type="button" className="btn btn-light offset-1 col-3">Save</button>
                         </div>
                     </div>
                 </div>
+
                 <div className="PasswordCard">
-                    <PasswordTable/>
+                    <PasswordTable />
                 </div>
             </div>
             <br></br>
