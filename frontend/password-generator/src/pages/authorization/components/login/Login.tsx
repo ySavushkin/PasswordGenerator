@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
-import { API_ROUTES } from '../../../../constants/ApiRoutes';
+import { API_ROUTES } from '../../../../constants/APIRoutes';
 
 interface UserData {
     email: string;

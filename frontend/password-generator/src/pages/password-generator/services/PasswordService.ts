@@ -1,3 +1,5 @@
+import { PasswordRecord } from '../components/password-table/PasswordRecord';
+
 type PasswordRequestData = {
     flags: number;
     length: number;
@@ -27,5 +29,31 @@ export async function fetchGeneratedPassword(
     } catch (error) {
         console.error('Error fetching password:', error);
         throw error;
+    }
+}
+
+export async function saveAndUploadPassword(
+    url: string,
+    request: PasswordRecord,
+    tableRef: React.RefObject<{ addRecord: (record: PasswordRecord) => void; } | null>,
+): Promise<void> {
+    try {
+        const newRecord = request;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newRecord),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save the password');
+        }
+
+        if (tableRef.current) {
+            tableRef.current.addRecord(newRecord);
+        }
+    } catch (error) {
+        console.error('Error saving password:', error);
     }
 }

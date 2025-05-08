@@ -5,7 +5,7 @@ import { UserData } from '../../../../data/UserData';
 import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
-import { API_ROUTES } from '../../../../constants/ApiRoutes';
+import { API_ROUTES } from '../../../../constants/APIRoutes';
 
 const RegistrationForm: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();

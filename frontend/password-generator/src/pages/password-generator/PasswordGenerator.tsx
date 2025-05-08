@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PasswordSizeRange from './components/PasswordSizeRange';
 import './PasswordGenerator.css';
 import { PasswordSettings } from './components/password-options/PasswordSettings';
 import PasswordSizeInput from './components/PasswordSizeInput';
 import PasswordIntro from './components/password-intro/PasswordIntro';
 import { CharOptions } from './components/password-options/CharOptions';
-import { fetchGeneratedPassword } from './services/PasswordService';
-import { API_ROUTES } from '../../constants/ApiRoutes';
+import { fetchGeneratedPassword, saveAndUploadPassword } from './services/PasswordService';
+import { API_ROUTES } from '../../constants/APIRoutes';
 import BubbleBackground from './components/bubble-background/BubbleBackground';
 import PasswordTable from './components/password-table/PasswordTable';
+import { PasswordRecord } from './components/password-table/PasswordRecord';
 
 const PasswordGenerator: React.FC = () => {
+    const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
+
     const [generatedPassword, setGeneratedPassword] = useState<string>('');
 
+    const [passwordNote, setPasswordNote] = useState<string>('');
     const [passwordSize, setPasswordSize] = useState<number>(16);
     const [selectedFlags, setSelectedFlags] = useState<number>(
         CharOptions.Uppercase | CharOptions.Lowercase | CharOptions.Numbers | CharOptions.Symbols,
@@ -24,6 +28,17 @@ const PasswordGenerator: React.FC = () => {
         const size: number = Number(data.target.value);
 
         setPasswordSize(size);
+    };
+
+    const handleSavePassword = async () => {
+        if (generatedPassword === null || generatedPassword === '') return;
+
+        const newRecord: PasswordRecord = {
+            password: generatedPassword,
+            note: passwordNote,
+        };
+
+        await saveAndUploadPassword('url', newRecord, tableRef);
     };
 
     const toggleFlag = (flag: CharOptions) => {
@@ -94,15 +109,19 @@ const PasswordGenerator: React.FC = () => {
                                     className="form-control"
                                     id="passwordNote"
                                     placeholder="Нотатка (необовʼязково)"
+                                    onChange={e => setPasswordNote(e.target.value)}
                                 />
                             </div>
-                            <button type="button" className="btn btn-light offset-1 col-3">Save</button>
+                            <button
+                                type="button"
+                                className="btn btn-light offset-1 col-3"
+                                onClick={handleSavePassword}>Save</button>
                         </div>
                     </div>
                 </div>
 
                 <div className="PasswordCard">
-                    <PasswordTable />
+                    <PasswordTable ref={tableRef}/>
                 </div>
             </div>
             <br></br>

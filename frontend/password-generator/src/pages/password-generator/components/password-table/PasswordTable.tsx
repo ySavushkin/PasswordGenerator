@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import './PasswordTable.css';
-import { API_ROUTES } from '../../../../constants/ApiRoutes';
+import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { PasswordRecord } from './PasswordRecord';
 
-const PasswordTable: React.FC = () => {
+const PasswordTable = forwardRef((props, ref) => {
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
+
+    useImperativeHandle(ref, () => {
+        return {
+            addRecord: addPasswordRecord,
+        };
+    });
+
+    const addPasswordRecord = (record: PasswordRecord) => {
+        setPasswordRecords(prev => [...prev, record]);
+    };
 
     useEffect(() => {
         const initialData: PasswordRecord[] = [
@@ -47,6 +57,6 @@ const PasswordTable: React.FC = () => {
             </table>
         </div>
     );
-};
+});
 
 export default PasswordTable;
