@@ -4,7 +4,6 @@ LABEL maintainer="Danylo Kizilov <danylo.kizilov@infiz.khpi.edu.ua>"
 WORKDIR /app
 
 # Копіюємо лише файли конфігурації для установки залежностей
-#COPY settings.gradle.kts build.gradle.kts /app/
 COPY . /app
 
 # Встановлюємо Python та Locust для тестування
@@ -26,11 +25,6 @@ COPY --from=dependency_stage /app/.gradle /app/.gradle
 # Компілюємо проект і створюємо JAR файл
 RUN ./gradlew build -s
 
-#Якщо буде потрібно скіпнути тести!
-#RUN ls -l /app
-#RUN chmod +x /app/gradlew # Даємо права на виконання для gradlew
-#RUN ./gradlew build -x test -x checkstyleMain -x checkstyleTest -s
-
 # Перевірка наявності JAR файлу
 RUN ls -l /app/build/libs/
 
@@ -51,23 +45,3 @@ EXPOSE 8080
 # Запускаємо перший .jar файл в директорії
 CMD ["java", "-jar", "/app/PasswordGenerator-0.0.1-SNAPSHOT.jar"]
 
-
-
-#   Для Stage#1 (Встановлення залежностей):
-#    docker build --target dependency_stage -t password-gen-app-deps .
-
-#    Для Stage#2 (Компіляція вихідного коду):
-#    docker build --target build_stage -t password-gen-app-build .
-
-#    Для Stage#3 (Запуск сервера):
-#    docker build --target final_stage -t password-gen-app-final .
-
-#   Для Stage#4 Запуск контейнера, щоб він з’явився в Docker Desktop:
-#   docker run -d --name password-gen-app -p 8080:8080 password-gen-app-final
-
-#Перевірте, чи файл існує, скориставшись командою docker run з тим !!!
-#самим ім'ям образу password-gen-app-build:
-#docker run --rm password-gen-app-build ls -l /app/build/libs/
-
-
-#docker exec -it 95f4aef60d241c8281251416a3203f4a3e7951cd844137b024a7048e79f7e024 /bin/bash
