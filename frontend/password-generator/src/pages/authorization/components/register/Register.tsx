@@ -17,6 +17,18 @@ const RegistrationForm: React.FC = () => {
         repeatPassword: '',
     });
 
+     const [notification, setNotification] = useState<{
+        message: string;
+        type: 'error' | 'success';
+        show: boolean;
+    }>({ message: '', type: 'error', show: false });
+
+     const showNotification = (message: string, type: 'error' | 'success') => {
+        setNotification({ message, type, show: true });
+        setTimeout(() => setNotification({ ...notification, show: false }), 5000);
+    };
+
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData(prev => ({
@@ -25,29 +37,78 @@ const RegistrationForm: React.FC = () => {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const validateForm = (): boolean => {
+    if (!userData.userName.trim()) {
+        showNotification('Username is required', 'error');
+        return false;
+    }
 
-        if (!isPasswordConfirmed()) {
-            alert('Passwords don\'t match!');
-            return;
-        }
+    if (!userData.email.trim()) {
+        showNotification('Email is required', 'error');
+        return false;
+    }
 
-        const registerResult = await sendAuthRequest(API_ROUTES.register, {
-            username: userData.userName,
-            email: userData.email,
-            password: userData.password,
-        });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+        showNotification('Please enter a valid email address', 'error');
+        return false;
+    }
 
-        handleAuthResult(registerResult, 'User registered successfully', RoutePaths.PASSWORD_GENERATOR);
-    };
+    if (!userData.password.trim()) {
+        showNotification('Password is required', 'error');
+        return false;
+    }
 
-    const isPasswordConfirmed = (): boolean => {
-        return userData.password === userData.repeatPassword;
-    };
+    if (userData.password.length < 8) {
+        showNotification('Password must be at least 8 characters', 'error');
+        return false;
+    }
+
+    if (!/[A-Z]/.test(userData.password)) {
+        showNotification('Password must contain at least one uppercase letter', 'error');
+        return false;
+    }
+
+    if (userData.password !== userData.repeatPassword) {
+        showNotification('Passwords do not match', 'error');
+        return false;
+    }
+
+    return true;
+};
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    const registerResult = await sendAuthRequest(API_ROUTES.register, {
+        username: userData.userName,
+        email: userData.email,
+        password: userData.password,
+    });
+
+    if (registerResult.success) {
+        showNotification('Registration successful!', 'success');
+        // Перенаправляем только после успешной регистрации
+        setTimeout(() => navigate(RoutePaths.PASSWORD_GENERATOR), 1500);
+    } else {
+        // Показываем ошибку от сервера (включая "Email already exists")
+        showNotification(
+            registerResult.message || 'Registration failed', 
+            'error'
+        );
+    }
+};
+
+  
 
     return (
         <div className="card">
+            {notification.show && (
+            <div className={`notification ${notification.type}`}>
+                {notification.message}
+            </div>
+        )}
             <div className="card2">
                 <form className="form" onSubmit={handleSubmit}>
                     <p className="form-header">Sign Up</p>

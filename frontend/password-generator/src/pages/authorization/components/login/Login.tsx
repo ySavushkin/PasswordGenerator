@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
-import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
-import { API_ROUTES } from '../../../../constants/ApiRoutes';
 
 interface UserData {
     email: string;
@@ -12,12 +10,12 @@ interface UserData {
 }
 
 const LoginPage: React.FC = () => {
-    const handleAuthResult = useHandleAuthResult();
-
     const [userData, setUserData] = useState<UserData>({
         email: '',
         password: '',
     });
+
+     
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -26,17 +24,40 @@ const LoginPage: React.FC = () => {
             [name]: value,
         }));
     };
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const loginResult = await sendAuthRequest(API_ROUTES.login, {
-            email: userData.email,
-            password: userData.password,
+    try {
+        // 1. Отправка данных на бэкенд
+        const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: userData.email,  // Передаем email
+                password: userData.password  // Передаем пароль
+            }),
         });
 
-        handleAuthResult(loginResult, 'Login successful', RoutePaths.PASSWORD_GENERATOR);
-    };
+        const data = await response.json();
+
+        // 2. Проверка ответа от бэкенда
+        if (response.ok) {
+            // Успешная аутентификация
+            navigate(RoutePaths.GENERATOR);
+        } else {
+            // Бэкенд вернул ошибку (неверный email/пароль)
+            setError(data.message || 'Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        setError('An error occurred during login. Please try again.');
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     return (
         <>
