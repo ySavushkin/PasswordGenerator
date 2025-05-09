@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import Cookies from 'js-cookie';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 interface UserData {
@@ -13,8 +13,6 @@ interface UserData {
 }
 
 
-export const ProtectedRoute = () => {
-  const token = Cookies.get('auth_token');
 
 const LoginPage: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
