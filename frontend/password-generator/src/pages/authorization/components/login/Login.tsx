@@ -12,7 +12,14 @@ interface UserData {
     password: string;
 }
 
+const validateEmail = (email: string): boolean => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
 
+const validatePassword = (password: string): boolean => {
+  return password.length >= 8;
+};
 
 const LoginPage: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
@@ -35,6 +42,18 @@ const navigate = useNavigate();
     };
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    
+     if (!validateEmail(userData.email)) {
+        setError('Please enter a valid email address');
+        return;
+    }
+
+    if (!validatePassword(userData.password)) {
+        setError('Password must be at least 8 characters long');
+        return;
+    }
+    
     setIsLoading(true);
     setError(null);
 
@@ -109,6 +128,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                                 onChange={handleChange}
                             />
                         </div>
+                           {error && (
+                            <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>
+                                {error}
+                            </div>
+                        )}
                         <button className="button"> Login </button>
                         <label className="hint">
                             Have no account?
