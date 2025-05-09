@@ -23,11 +23,11 @@ export async function sendAuthRequest(
         });
 
        
-        const result = await response.json().catch(() => response.text());
+        const result = await response.text();
         
         return {
             success: response.ok,
-            message: typeof result === 'object' ? result.message || result.error : result,
+             message: result || (response.ok ? 'Success' : 'Request failed'),
         };
     } catch (error) {
         console.error('Error:', error);
