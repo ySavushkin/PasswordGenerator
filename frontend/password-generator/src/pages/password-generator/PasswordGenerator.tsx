@@ -114,7 +114,7 @@ const PasswordGenerator: React.FC = () => {
                             </div>
                             <button
                                 type="button"
-                                className="btn btn-light offset-1 col-3"
+                                className="button offset-1 col-3"
                                 onClick={handleSavePassword}>Save</button>
                         </div>
                     </div>

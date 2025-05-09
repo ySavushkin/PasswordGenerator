@@ -38,7 +38,7 @@ const PasswordTable = forwardRef((props, ref) => {
 
     return (
         <div className="p-3">
-            <h2 className="text-white h2 mb-4">Ваші збережені паролі</h2>
+            <h4 className="text-white h4 mb-4"><strong>Ваші збережені паролі</strong></h4>
             <table className="table table-dark table-striped m-auto">
                 <thead>
                     <tr>
