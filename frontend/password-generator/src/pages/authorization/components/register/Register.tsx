@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/ApiRoutes';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
@@ -76,29 +78,42 @@ const RegistrationForm: React.FC = () => {
     return true;
 };
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-    if (!validateForm()) return;
+        try {
+            const response = await fetch(API_ROUTES.register, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: userData.userName,
+                    email: userData.email,
+                    password: userData.password,
+                }),
+                credentials: 'include',
+            });
 
-    const registerResult = await sendAuthRequest(API_ROUTES.register, {
-        username: userData.userName,
-        email: userData.email,
-        password: userData.password,
-    });
+            const data = await response.json();
 
-    if (registerResult.success) {
-        showNotification('Registration successful!', 'success');
-        // Перенаправляем только после успешной регистрации
-        setTimeout(() => navigate(RoutePaths.PASSWORD_GENERATOR), 1500);
-    } else {
-        // Показываем ошибку от сервера (включая "Email already exists")
-        showNotification(
-            registerResult.message || 'Registration failed', 
-            'error'
-        );
-    }
-};
+            if (response.ok) {
+                if (data.token) {
+                    Cookies.set('auth_token', data.token, {
+                        expires: 7,
+                        secure: true,
+                        sameSite: 'strict'
+                    });
+                }
+                showNotification('Registration successful!', 'success');
+                setTimeout(() => navigate(RoutePaths.PASSWORD_GENERATOR), 1500);
+            } else {
+                showNotification(data.message || 'Registration failed', 'error');
+            }
+        } catch (error) {
+            showNotification('Registration error. Please try again.', 'error');
+        }
+    };
+
 
   
 

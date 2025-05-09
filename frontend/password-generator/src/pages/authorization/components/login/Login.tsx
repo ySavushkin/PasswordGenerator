@@ -3,11 +3,18 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
+import Cookies from 'js-cookie';
+import { useNavigate, Outlet } from 'react-router-dom';
+
 
 interface UserData {
     email: string;
     password: string;
 }
+
+
+export const ProtectedRoute = () => {
+  const token = Cookies.get('auth_token');
 
 const LoginPage: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
@@ -15,6 +22,10 @@ const LoginPage: React.FC = () => {
         password: '',
     });
 
+    
+const [isLoading, setIsLoading] = useState(false); // Добавили состояние загрузки
+const [error, setError] = useState<string | null>(null); // Добавили состояние ошибки    
+const navigate = useNavigate(); 
      
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,21 +42,29 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     try {
         // 1. Отправка данных на бэкенд
-        const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: userData.email,  // Передаем email
-                password: userData.password  // Передаем пароль
-            }),
-        });
+       const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        email: userData.email,
+        password: userData.password
+    }),
+    credentials: 'include', // Отдельный параметр запроса
+});
 
         const data = await response.json();
 
         // 2. Проверка ответа от бэкенда
         if (response.ok) {
+                        if (data.token) {
+                Cookies.set('auth_token', data.token, { 
+                    expires: 7, // Срок действия 7 дней
+                    secure: true, // Только для HTTPS
+                    sameSite: 'strict' // Защита от CSRF
+                });
+            }
             // Успешная аутентификация
             navigate(RoutePaths.GENERATOR);
         } else {
