@@ -1,4 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RoutePaths } from '../../router/RoutePaths';
+import Cookies from 'js-cookie';
+import { FaCopy, FaSyncAlt, FaSignOutAlt } from 'react-icons/fa';
 import PasswordSizeRange from './components/PasswordSizeRange';
 import './PasswordGenerator.css';
 import { PasswordSettings } from './components/password-options/PasswordSettings';
@@ -23,6 +27,13 @@ const PasswordGenerator: React.FC = () => {
     );
     const min: number = 4;
     const max: number = 32;
+    const navigate = useNavigate();
+
+      // Функция выхода
+    const handleLogout = () => {
+        Cookies.remove('auth_token'); // Удаляем токен
+        navigate(RoutePaths.LOGIN); // Перенаправляем на страницу входа
+    };
 
     const handlePasswordSize = (data: React.ChangeEvent<HTMLInputElement>) => {
         const size: number = Number(data.target.value);
@@ -50,6 +61,7 @@ const PasswordGenerator: React.FC = () => {
         });
     };
 
+
     useEffect(() => {
         const fetchPassword = async () => {
             try {
@@ -65,10 +77,35 @@ const PasswordGenerator: React.FC = () => {
 
         fetchPassword();
     }, [passwordSize, selectedFlags]);
+    
+
+      const handleCopyPassword = () => {
+        navigator.clipboard.writeText(generatedPassword);
+        alert('Пароль скопирован!');
+    };
+
+      const handleRefreshPassword = async () => {
+        try {
+            const result = await fetchGeneratedPassword(API_ROUTES.generator, {
+                length: passwordSize,
+                flags: selectedFlags,
+            });
+            setGeneratedPassword(result.password);
+        } catch (error) {
+            console.error('Failed to refresh password', error);
+        }
+    };
 
     return (
         <>
             <BubbleBackground />
+             <button 
+  type="button" className="btn btn-dark offset-1 col-3 exit-button"
+  onClick={handleLogout}
+>
+  Exit
+</button>
+            
             <PasswordIntro />
             <br></br>
 
@@ -86,6 +123,22 @@ const PasswordGenerator: React.FC = () => {
                                 value={generatedPassword}
                                 onChange={(e) => setGeneratedPassword(e.target.value)}
                             />
+                            <button 
+                        className="btn btn-outline-secondary" 
+                        type="button"
+                        onClick={handleCopyPassword}
+                        title="Копировать"
+                    >
+                        <FaCopy />
+                    </button>
+                    <button 
+                        className="btn btn-outline-secondary" 
+                        type="button"
+                        onClick={handleRefreshPassword}
+                        title="Обновить"
+                    >
+                        <FaSyncAlt />
+                    </button>
                             <div className="progress rounded-0 password-progress">
                                 <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
                                     aria-valuemin={0} aria-valuemax={100}></div>

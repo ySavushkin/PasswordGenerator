@@ -22,10 +22,12 @@ export async function sendAuthRequest(
             body: JSON.stringify(data),
         });
 
+       
         const result = await response.text();
+        
         return {
             success: response.ok,
-            message: result || (response.ok ? 'Success' : 'Request failed'),
+             message: result || (response.ok ? 'Success' : 'Request failed'),
         };
     } catch (error) {
         console.error('Error:', error);

@@ -5,19 +5,35 @@ import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
 
 interface UserData {
     email: string;
     password: string;
 }
 
-const LoginPage: React.FC = () => {
-    const handleAuthResult = useHandleAuthResult();
+const validateEmail = (email: string): boolean => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
 
+const validatePassword = (password: string): boolean => {
+  return password.length >= 8;
+};
+
+const LoginPage: React.FC = () => {
     const [userData, setUserData] = useState<UserData>({
         email: '',
         password: '',
     });
+
+    
+const [isLoading, setIsLoading] = useState(false); // Добавили состояние загрузки
+const [error, setError] = useState<string | null>(null); // Добавили состояние ошибки    
+const navigate = useNavigate(); 
+     
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -26,17 +42,60 @@ const LoginPage: React.FC = () => {
             [name]: value,
         }));
     };
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    
+     if (!validateEmail(userData.email)) {
+        setError('Please enter a valid email address');
+        return;
+    }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    if (!validatePassword(userData.password)) {
+        setError('Password must be at least 8 characters long');
+        return;
+    }
+    
+    setIsLoading(true);
+    setError(null);
 
-        const loginResult = await sendAuthRequest(API_ROUTES.login, {
-            email: userData.email,
-            password: userData.password,
-        });
+    try {
+        // 1. Отправка данных на бэкенд
+       const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        email: userData.email,
+        password: userData.password
+    }),
+    credentials: 'include', // Отдельный параметр запроса
+});
 
-        handleAuthResult(loginResult, 'Login successful', RoutePaths.PASSWORD_GENERATOR);
-    };
+        const data = await response.json();
+
+        // 2. Проверка ответа от бэкенда
+        if (response.ok) {
+                        if (data.token) {
+                Cookies.set('auth_token', data.token, { 
+                    expires: 7, // Срок действия 7 дней
+                    secure: true, // Только для HTTPS
+                    sameSite: 'strict' // Защита от CSRF
+                });
+            }
+            // Успешная аутентификация
+            navigate(RoutePaths.GENERATOR);
+        } else {
+            // Бэкенд вернул ошибку (неверный email/пароль)
+            setError(data.message || 'Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        setError('An error occurred during login. Please try again.');
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     return (
         <>
@@ -71,6 +130,11 @@ const LoginPage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </div>
+                           {error && (
+                            <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>
+                                {error}
+                            </div>
+                        )}
                         <button className="button"> Login </button>
                         <label className="hint">
                             Have no account?
