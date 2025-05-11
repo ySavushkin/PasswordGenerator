@@ -5,9 +5,6 @@ import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-
 
 interface UserData {
     email: string;
@@ -24,17 +21,26 @@ const validatePassword = (password: string): boolean => {
 };
 
 const LoginPage: React.FC = () => {
+    const handleAuthResult = useHandleAuthResult();
+
     const [userData, setUserData] = useState<UserData>({
         email: '',
         password: '',
     });
 
-    
-const [isLoading, setIsLoading] = useState(false); // Добавили состояние загрузки
-const [error, setError] = useState<string | null>(null); // Добавили состояние ошибки    
-const navigate = useNavigate(); 
-     
+    const [isLoading, setIsLoading] = useState(false);
 
+    const [notification, setNotification] = useState<{
+        message: string;
+        type: 'error' | 'success';
+        show: boolean;
+    }>({ message: '', type: 'error', show: false });
+
+    const showNotification = (message: string, type: 'error' | 'success') => {
+        setNotification({ message, type, show: true });
+        setTimeout(() => setNotification({ ...notification, show: false }), 5000);
+    };
+     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData(prev => ({
@@ -42,60 +48,37 @@ const navigate = useNavigate();
             [name]: value,
         }));
     };
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    
-     if (!validateEmail(userData.email)) {
-        setError('Please enter a valid email address');
-        return;
-    }
 
-    if (!validatePassword(userData.password)) {
-        setError('Password must be at least 8 characters long');
-        return;
-    }
-    
-    setIsLoading(true);
-    setError(null);
-
-    try {
-        // 1. Отправка данных на бэкенд
-       const response = await fetch('http://localhost:8080/passwordGenerator/auth/login', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        email: userData.email,
-        password: userData.password
-    }),
-    credentials: 'include', // Отдельный параметр запроса
-});
-
-        const data = await response.json();
-
-        // 2. Проверка ответа от бэкенда
-        if (response.ok) {
-                        if (data.token) {
-                Cookies.set('auth_token', data.token, { 
-                    expires: 7, // Срок действия 7 дней
-                    secure: true, // Только для HTTPS
-                    sameSite: 'strict' // Защита от CSRF
-                });
-            }
-            // Успешная аутентификация
-            navigate(RoutePaths.GENERATOR);
-        } else {
-            // Бэкенд вернул ошибку (неверный email/пароль)
-            setError(data.message || 'Login failed. Please check your credentials.');
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        
+        if (!validateEmail(userData.email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
         }
-    } catch (error) {
-        setError('An error occurred during login. Please try again.');
-    } finally {
-        setIsLoading(false);
-    }
-};
+
+        if (!validatePassword(userData.password)) {
+            showNotification('Password must be at least 8 characters long', 'error');
+            return;
+        }
+        
+        const registerResult = await sendAuthRequest(API_ROUTES.register, {
+            email: userData.email,
+            password: userData.password,
+        });
+        
+        handleAuthResult( 
+            registerResult, 
+            'Login successful', 
+            RoutePaths.PASSWORD_GENERATOR,
+            showNotification,
+            'Login successful!',
+            'Login failed! Try again!'
+        );
+
+        setIsLoading(true);
+    };
 
     return (
         <>
@@ -130,9 +113,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                                 onChange={handleChange}
                             />
                         </div>
-                           {error && (
+                           {notification && (
                             <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>
-                                {error}
+                                {notification.message}
                             </div>
                         )}
                         <button className="button"> Login </button>

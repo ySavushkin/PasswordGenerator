@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
@@ -19,13 +17,13 @@ const RegistrationForm: React.FC = () => {
         repeatPassword: '',
     });
 
-     const [notification, setNotification] = useState<{
+    const [notification, setNotification] = useState<{
         message: string;
         type: 'error' | 'success';
         show: boolean;
     }>({ message: '', type: 'error', show: false });
 
-     const showNotification = (message: string, type: 'error' | 'success') => {
+    const showNotification = (message: string, type: 'error' | 'success') => {
         setNotification({ message, type, show: true });
         setTimeout(() => setNotification({ ...notification, show: false }), 5000);
     };
@@ -40,82 +38,63 @@ const RegistrationForm: React.FC = () => {
     };
 
     const validateForm = (): boolean => {
-    if (!userData.userName.trim()) {
-        showNotification('Username is required', 'error');
-        return false;
-    }
+        if (!userData.userName.trim()) {
+            showNotification('Username is required', 'error');
+            return false;
+        }
 
-    if (!userData.email.trim()) {
-        showNotification('Email is required', 'error');
-        return false;
-    }
+        if (!userData.email.trim()) {
+            showNotification('Email is required', 'error');
+            return false;
+        }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-        showNotification('Please enter a valid email address', 'error');
-        return false;
-    }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return false;
+        }
 
-    if (!userData.password.trim()) {
-        showNotification('Password is required', 'error');
-        return false;
-    }
+        if (!userData.password.trim()) {
+            showNotification('Password is required', 'error');
+            return false;
+        }
 
-    if (userData.password.length < 8) {
-        showNotification('Password must be at least 8 characters', 'error');
-        return false;
-    }
+        if (userData.password.length < 8) {
+            showNotification('Password must be at least 8 characters', 'error');
+            return false;
+        }
 
-    if (!/[A-Z]/.test(userData.password)) {
-        showNotification('Password must contain at least one uppercase letter', 'error');
-        return false;
-    }
+        if (!/[A-Z]/.test(userData.password)) {
+            showNotification('Password must contain at least one uppercase letter', 'error');
+            return false;
+        }
 
-    if (userData.password !== userData.repeatPassword) {
-        showNotification('Passwords do not match', 'error');
-        return false;
-    }
+        if (userData.password !== userData.repeatPassword) {
+            showNotification('Passwords do not match', 'error');
+            return false;
+        }
 
-    return true;
-};
+        return true;
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!validateForm()) return;
 
-        try {
-            const response = await fetch(API_ROUTES.register, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: userData.userName,
-                    email: userData.email,
-                    password: userData.password,
-                }),
-                credentials: 'include',
-            });
+        const registerResult = await sendAuthRequest(API_ROUTES.register, {
+            username: userData.userName,
+            email: userData.email,
+            password: userData.password,
+        });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                if (data.token) {
-                    Cookies.set('auth_token', data.token, {
-                        expires: 7,
-                        secure: true,
-                        sameSite: 'strict'
-                    });
-                }
-                showNotification('Registration successful!', 'success');
-                setTimeout(() => navigate(RoutePaths.PASSWORD_GENERATOR), 1500);
-            } else {
-                showNotification(data.message || 'Registration failed', 'error');
-            }
-        } catch (error) {
-            showNotification('Registration error. Please try again.', 'error');
-        }
+        handleAuthResult( 
+            registerResult, 
+            'User registered successfully', 
+            RoutePaths.PASSWORD_GENERATOR,
+            showNotification,
+            'Registration successful!',
+            'Registration error. Please try again.'
+        );
     };
-
-
-  
 
     return (
         <div className="card">

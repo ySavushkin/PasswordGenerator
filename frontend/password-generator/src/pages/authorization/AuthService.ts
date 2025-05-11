@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 type AuthRequestData = {
     email: string;
@@ -9,6 +10,7 @@ type AuthRequestData = {
 type AuthResponse = {
     success: boolean;
     message: string;
+    token?: string;
 };
 
 export async function sendAuthRequest(
@@ -20,14 +22,15 @@ export async function sendAuthRequest(
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
+            credentials: 'include',
         });
 
-       
-        const result = await response.text();
+        const result = await response.json();
         
         return {
             success: response.ok,
-             message: result || (response.ok ? 'Success' : 'Request failed'),
+            message: result || (response.ok ? 'Success' : 'Request failed'),
+            token: result.token,
         };
     } catch (error) {
         console.error('Error:', error);
@@ -42,12 +45,23 @@ export function useHandleAuthResult() {
         result: AuthResponse,
         successMessage: string,
         navigateTo: string,
+        showNotification: (message: string, type: 'error' | 'success') => void,
+        authSuccessMessage: string,
+        authFailedMessage: string,
     ): void => {
         if (result.success && result.message === successMessage) {
-            alert(successMessage);
-            navigate(navigateTo);
+            if (result.token) {
+                Cookies.set('auth_token', result.token, {
+                    expires: 7,
+                    secure: true,
+                    sameSite: 'strict'
+                });
+            }
+
+            showNotification(authSuccessMessage, 'success');
+            setTimeout(() => navigate(navigateTo), 1500);
         } else {
-            alert(result.message);
+            showNotification(authFailedMessage, 'error');
         }
     };
 

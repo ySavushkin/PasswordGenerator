@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RoutePaths } from '../../router/RoutePaths';
 import Cookies from 'js-cookie';
-import { FaCopy, FaSyncAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaCopy, FaSyncAlt } from 'react-icons/fa';
 import PasswordSizeRange from './components/PasswordSizeRange';
 import './PasswordGenerator.css';
 import { PasswordSettings } from './components/password-options/PasswordSettings';
@@ -29,10 +29,9 @@ const PasswordGenerator: React.FC = () => {
     const max: number = 32;
     const navigate = useNavigate();
 
-      // Функция выхода
     const handleLogout = () => {
-        Cookies.remove('auth_token'); // Удаляем токен
-        navigate(RoutePaths.LOGIN); // Перенаправляем на страницу входа
+        Cookies.remove('auth_token');
+        navigate(RoutePaths.LOGIN);
     };
 
     const handlePasswordSize = (data: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,12 +98,12 @@ const PasswordGenerator: React.FC = () => {
     return (
         <>
             <BubbleBackground />
-             <button 
-  type="button" className="btn btn-dark offset-1 col-3 exit-button"
-  onClick={handleLogout}
->
-  Exit
-</button>
+            <button 
+                type="button" className="btn btn-dark offset-1 col-3 exit-button"
+                onClick={handleLogout}
+            >
+                Exit
+            </button>
             
             <PasswordIntro />
             <br></br>
