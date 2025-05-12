@@ -5,20 +5,12 @@ import '../../Authorization.css';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
+import { ValidationService } from '../../ValidationService';
 
 interface UserData {
     email: string;
     password: string;
 }
-
-const validateEmail = (email: string): boolean => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-};
-
-const validatePassword = (password: string): boolean => {
-  return password.length >= 8;
-};
 
 const LoginPage: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
@@ -51,12 +43,12 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
         
         
-        if (!validateEmail(userData.email)) {
+        if (!ValidationService.validateEmail(userData.email)) {
             showNotification('Please enter a valid email address', 'error');
             return;
         }
 
-        if (!validatePassword(userData.password)) {
+        if (!ValidationService.validatePasswordLength(userData.password)) {
             showNotification('Password must be at least 8 characters long', 'error');
             return;
         }

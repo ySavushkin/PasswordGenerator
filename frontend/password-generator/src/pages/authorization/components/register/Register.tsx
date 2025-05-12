@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
+import { ValidationService } from '../../ValidationService';
 
 const RegistrationForm: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
@@ -38,37 +39,32 @@ const RegistrationForm: React.FC = () => {
     };
 
     const validateForm = (): boolean => {
-        if (!userData.userName.trim()) {
+        if (!ValidationService.trimUserName(userData.userName)) {
             showNotification('Username is required', 'error');
             return false;
         }
 
-        if (!userData.email.trim()) {
+        if (!ValidationService.trimEmail(userData.email)) {
             showNotification('Email is required', 'error');
             return false;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-            showNotification('Please enter a valid email address', 'error');
-            return false;
-        }
-
-        if (!userData.password.trim()) {
+        if (!ValidationService.trimPassword(userData.password)) {
             showNotification('Password is required', 'error');
             return false;
         }
 
-        if (userData.password.length < 8) {
+        if (!ValidationService.validateEmail(userData.email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return false;
+        }
+
+        if (!ValidationService.validatePasswordLength(userData.password)) {
             showNotification('Password must be at least 8 characters', 'error');
             return false;
         }
 
-        if (!/[A-Z]/.test(userData.password)) {
-            showNotification('Password must contain at least one uppercase letter', 'error');
-            return false;
-        }
-
-        if (userData.password !== userData.repeatPassword) {
+        if (!ValidationService.validateRepeatPassword(userData.password, userData.repeatPassword)) {
             showNotification('Passwords do not match', 'error');
             return false;
         }
