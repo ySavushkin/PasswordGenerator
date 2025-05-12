@@ -1,6 +1,6 @@
 package com.example.passwordgenerator.controller;
 
-import com.example.passwordgenerator.DTO.UserDTO;
+import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.service.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,28 +31,28 @@ class AuthControllerTest {
 
     @Test
     void register_ShouldReturnSuccessMessage() throws Exception {
-        UserDTO userDTO = new UserDTO("testuser", "test@example.com", "password123");
+        UserDto UserDto = new UserDto("testuser", "test@example.com", "password123");
 
-        when(loginService.registerUser(any(UserDTO.class)))
+        when(loginService.registerUser(any(UserDto.class)))
                 .thenReturn("Registration successful");
 
         mockMvc.perform(post("/passwordGenerator/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO)))
+                        .content(objectMapper.writeValueAsString(UserDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Registration successful"));
     }
 
     @Test
     void login_ShouldReturnSuccessMessage() throws Exception {
-        UserDTO userDTO = new UserDTO("testuser", "test@example.com", "password123");
+        UserDto UserDto = new UserDto("testuser", "test@example.com", "password123");
 
-        when(loginService.loginUser(any(UserDTO.class)))
+        when(loginService.loginUser(any(UserDto.class)))
                 .thenReturn("Login successful");
 
         mockMvc.perform(post("/passwordGenerator/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO)))
+                        .content(objectMapper.writeValueAsString(UserDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Login successful"));
     }

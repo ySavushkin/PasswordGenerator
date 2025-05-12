@@ -1,4 +1,3 @@
-
 #V2
 version: '3.8'
 
@@ -39,24 +38,8 @@ networks:
     #external: true
     driver: bridge
 
-
-
-
-
-
 #Підняття стеків
 #docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
-
-
-
-
-
-
-
-
-
-
-
 
 #docker-compose -f docker-compose.yml up -d
 #docker-compose -f docker-compose-locust.yml up -d

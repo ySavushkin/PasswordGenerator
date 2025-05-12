@@ -1,4 +1,4 @@
-package com.example.passwordgenerator.DTO;
+package com.example.passwordgenerator.dto;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserDTOTest {
+class UserDtoTest {
 
     private Validator validator;
 
@@ -20,18 +20,18 @@ class UserDTOTest {
 
     @Test
     void whenAllFieldsValid_thenNoViolations() {
-        UserDTO userDTO = new UserDTO("testuser", "test@example.com", "securePassword");
+        UserDto UserDto = new UserDto("testuser", "test@example.com", "securePassword");
 
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+        Set<ConstraintViolation<UserDto>> violations = validator.validate(UserDto);
 
         assertThat(violations).isEmpty();
     }
 
     @Test
     void whenFieldsAreInvalid_thenViolationsOccur() {
-        UserDTO userDTO = new UserDTO("", "invalid-email", "");
+        UserDto UserDto = new UserDto("", "invalid-email", "");
 
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+        Set<ConstraintViolation<UserDto>> violations = validator.validate(UserDto);
 
         assertThat(violations).hasSize(3);
 
@@ -42,14 +42,14 @@ class UserDTOTest {
 
     @Test
     void getterAndSetter_ShouldWorkCorrectly() {
-        UserDTO userDTO = new UserDTO();
+        UserDto UserDto = new UserDto();
 
-        userDTO.setUsername("testuser");
-        userDTO.setEmail("test@example.com");
-        userDTO.setPassword("securePassword");
+        UserDto.setUsername("testuser");
+        UserDto.setEmail("test@example.com");
+        UserDto.setPassword("securePassword");
 
-        assertThat(userDTO.getUsername()).isEqualTo("testuser");
-        assertThat(userDTO.getEmail()).isEqualTo("test@example.com");
-        assertThat(userDTO.getPassword()).isEqualTo("securePassword");
+        assertThat(UserDto.getUsername()).isEqualTo("testuser");
+        assertThat(UserDto.getEmail()).isEqualTo("test@example.com");
+        assertThat(UserDto.getPassword()).isEqualTo("securePassword");
     }
 }
