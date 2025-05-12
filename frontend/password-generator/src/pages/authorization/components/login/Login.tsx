@@ -28,8 +28,6 @@ const LoginPage: React.FC = () => {
         password: '',
     });
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const [notification, setNotification] = useState<{
         message: string;
         type: 'error' | 'success';
@@ -76,8 +74,6 @@ const LoginPage: React.FC = () => {
             'Login successful!',
             'Login failed! Try again!'
         );
-
-        setIsLoading(true);
     };
 
     return (
