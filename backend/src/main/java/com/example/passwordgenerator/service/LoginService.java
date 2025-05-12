@@ -1,9 +1,10 @@
 package com.example.passwordgenerator.service;
 
-import com.example.passwordgenerator.DTO.UserDTO;
+import com.example.passwordgenerator.dto.UserDto;
 
 public interface LoginService {
 
-    String loginUser(UserDTO userDTO);
-    String registerUser(UserDTO userDTO);
+    String loginUser(UserDto userDTO);
+    String registerUser(UserDto userDTO);
+
 }

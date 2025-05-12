@@ -1,4 +1,4 @@
-package com.example.passwordgenerator.DTO;
+package com.example.passwordgenerator.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordDTO {
+public class PasswordDto {
 
     @NotNull
     private Integer length;
 
     @NotNull
     private Integer flags;
+
 }

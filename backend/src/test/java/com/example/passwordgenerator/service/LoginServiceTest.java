@@ -1,6 +1,6 @@
 package com.example.passwordgenerator.service;
 
-import com.example.passwordgenerator.DTO.UserDTO;
+import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.domain.entity.User;
 import com.example.passwordgenerator.repository.UserRepository;
 import com.example.passwordgenerator.service.impl.LoginServiceImpl;
@@ -28,7 +28,7 @@ public class LoginServiceTest {
     void testLoginUserSuccessfulLogin() {
 
         User user = new User(1L, "Test", "test@test.com", "test");
-        UserDTO userDTO = new UserDTO("Test", "test@test.com", "test");
+        UserDto userDTO = new UserDto("Test", "test@test.com", "test");
 
         when(userRepository.findUserByEmail("test@test.com")).thenReturn(Optional.of(user));
 
@@ -37,7 +37,7 @@ public class LoginServiceTest {
 
     @Test
     void testLoginUserUserNotFound() {
-        UserDTO userDTO = new UserDTO("Test", "invalid@test.com", "test");
+        UserDto userDTO = new UserDto("Test", "invalid@test.com", "test");
 
         when(userRepository.findUserByEmail("invalid@test.com")).thenReturn(Optional.empty());
 
@@ -48,7 +48,7 @@ public class LoginServiceTest {
     void testLoginUserInvalidPassword() {
 
         User user = new User(1L, "Test", "test@test.com", "test");
-        UserDTO userDTO = new UserDTO("Test", "test@test.com", "invalid");
+        UserDto userDTO = new UserDto("Test", "test@test.com", "invalid");
 
         when(userRepository.findUserByEmail("test@test.com")).thenReturn(Optional.of(user));
 
@@ -57,7 +57,7 @@ public class LoginServiceTest {
 
     @Test
     void testRegisterUserSuccess() {
-        UserDTO userDTO = new UserDTO("test", "test@test.com", "test");
+        UserDto userDTO = new UserDto("test", "test@test.com", "test");
 
         when(userRepository.findUserByEmail("test@test.com")).thenReturn(Optional.empty());
 
@@ -69,7 +69,7 @@ public class LoginServiceTest {
 
     @Test
     void testRegisterUserEmailAlreadyExists() {
-        UserDTO userDTO = new UserDTO("test", "test@test.com", "test");
+        UserDto userDTO = new UserDto("test", "test@test.com", "test");
         User existingUser = new User();
         existingUser.setEmail("test@test.com");
 
