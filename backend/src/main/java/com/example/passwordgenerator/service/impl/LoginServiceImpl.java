@@ -16,10 +16,10 @@ public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
 
     @Override
-    public String loginUser(UserDto userDto) {
-        Optional<User> user = userRepository.findUserByEmail(userDto.getEmail());
+    public String loginUser(UserDto UserDto) {
+        Optional<User> user = userRepository.findUserByEmail(UserDto.getEmail());
 
-        if (user.isPresent() && user.get().getPasswordHash().equals(userDto.getPassword())) {
+        if (user.isPresent() && user.get().getPasswordHash().equals(UserDto.getPassword())) {
             return "Login successful";
         } else {
             return "Invalid email or password";
@@ -27,16 +27,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String registerUser(UserDto userDto) {
-        Optional<User> existingUser = userRepository.findUserByEmail(userDto.getEmail());
+    public String registerUser(UserDto UserDto) {
+        Optional<User> existingUser = userRepository.findUserByEmail(UserDto.getEmail());
         if (existingUser.isPresent()) {
             return "User with this email already exists";
         }
 
         User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setPasswordHash(userDto.getPassword());
+        user.setUsername(UserDto.getUsername());
+        user.setEmail(UserDto.getEmail());
+        user.setPasswordHash(UserDto.getPassword());
 
         userRepository.save(user);
         return "User registered successfully";

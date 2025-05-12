@@ -1,56 +1,51 @@
-#
-#version: '3'
-#
-#services:
-#  locust-master:
-#    image: locustio/locust
-#    container_name: locust-master
-#    ports:
-#      - "8089:8089"  # Web UI
-#    volumes:
-#      - ./locust/locustfile.py:/mnt/locust/locustfile.py
-#    command: >
-#      -f /mnt/locust/locustfile.py
-#      --master
-#    depends_on:
-#      - demo
-#    environment:
-#      - LOCUST_MODE=master
-#      - LOCUST_HOST=http://demo:8080
-#    networks:
-#      - app_network
-#
-#  locust-worker:
-#    image: locustio/locust
-#    container_name: locust-worker
-#    depends_on:
-#      - locust-master
-#    volumes:
-#      - ./locust/locustfile.py:/mnt/locust/locustfile.py
-#    command: >
-#      -f /mnt/locust/locustfile.py
-#      --worker
-#      --master-host locust-master
-#    environment:
-#      - LOCUST_MODE=worker
-#      - LOCUST_HOST=http://demo:8080
-#    networks:
-#      - app_network
-#
-#networks:
-#  app_network:
-#    external: true  # Підключення до мережі основного docker-compose.yml
-#
-#
-#
-#  #Запуск:
-#  #Створи спільну мережу:
-#  #docker network create app_network
-#
-#  #Запусти бекенд і базу:
-#  #docker compose up --build -d
-#
-#  #Запусти Locust master/worker:
-#  #docker compose -f docker-compose-locust.yml up --build -d
-#
-#  #Веб-інтерфейс: http://localhost:8089
+#V2
+version: '3.8'
+
+services:
+  locust-master:
+    image: locustio/locust
+    container_name: locust-master
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./mnt:/mnt/locust  # Монтуємо всю папку mnt
+    command: ["-f", "/mnt/locust/locustfile.py", "--master"]
+    environment:
+      - LOCUST_MODE=master
+      - LOCUST_HOST=http://demo:8080
+    networks:
+      - app_network
+    depends_on:
+      - demo
+      - db
+
+  locust-worker:
+    image: locustio/locust
+    container_name: locust-worker
+    volumes:
+      - ./mnt:/mnt/locust  # Те саме
+    command: ["-f", "/mnt/locust/locustfile.py", "--worker", "--master-host", "locust-master"]
+    environment:
+      - LOCUST_MODE=worker
+      - LOCUST_HOST=http://demo:8080
+    depends_on:
+      - locust-master
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    #external: true
+    driver: bridge
+
+#Підняття стеків
+#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
+
+#docker-compose -f docker-compose.yml up -d
+#docker-compose -f docker-compose-locust.yml up -d
+
+#Або ось так
+#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
+
+#виконує очистку всієї Docker-системи від непотрібних об'єктів
+#docker system prune -a

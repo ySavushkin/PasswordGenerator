@@ -18,12 +18,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody UserDto userDTO) {
-        return loginService.registerUser(userDTO);
+    public String register(@RequestBody UserDto userDto) {
+        return loginService.registerUser(userDto);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDTO) {
-        return loginService.loginUser(userDTO);
+    public String login(@RequestBody UserDto userDto) {
+        return loginService.loginUser(userDto);
     }
+
 }
