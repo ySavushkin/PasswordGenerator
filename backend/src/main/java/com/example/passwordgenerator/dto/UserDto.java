@@ -1,4 +1,4 @@
-package com.example.passwordgenerator.DTO;
+package com.example.passwordgenerator.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserDto {
 
     @NotEmpty(message = "Username cannot be empty")
     private String username;
@@ -23,4 +23,5 @@ public class UserDTO {
 
     @NotEmpty(message = "Password cannot be empty")
     private String password;
+
 }

@@ -35,4 +35,10 @@ public class User {
     @JsonIgnore
     private List<Password> passwords;
 
+    public User(long id, String username, String email, String passwordHash) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
 }
