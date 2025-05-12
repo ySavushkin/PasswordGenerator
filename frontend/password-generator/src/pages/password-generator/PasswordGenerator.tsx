@@ -100,10 +100,9 @@ const PasswordGenerator: React.FC = () => {
             <BubbleBackground />
             <button 
                 type="button" className="btn btn-dark offset-1 col-3 exit-button"
-                onClick={handleLogout}
-            >
+                onClick={handleLogout}>
                 Exit
-            </button>
+            </button><br></br>
             
             <PasswordIntro />
             <br></br>
@@ -113,31 +112,32 @@ const PasswordGenerator: React.FC = () => {
                     <div className="PasswordForm">
 
                         <div className="mb-3 password-container">
-                            <input
-                                className="form-control rounded-0 password-input"
-                                id="passwordInput"
-                                type="text"
-                                placeholder="Введіть ваш пароль"
-                                minLength={min}
-                                value={generatedPassword}
-                                onChange={(e) => setGeneratedPassword(e.target.value)}
-                            />
-                            <button 
-                        className="btn btn-outline-secondary" 
-                        type="button"
-                        onClick={handleCopyPassword}
-                        title="Копировать"
-                    >
-                        <FaCopy />
-                    </button>
-                    <button 
-                        className="btn btn-outline-secondary" 
-                        type="button"
-                        onClick={handleRefreshPassword}
-                        title="Обновить"
-                    >
-                        <FaSyncAlt />
-                    </button>
+                            <div className="input-group">
+                                <input
+                                    className="form-control rounded-0 password-input"
+                                    id="passwordInput"
+                                    type="text"
+                                    placeholder="Введіть ваш пароль"
+                                    minLength={min}
+                                    value={generatedPassword}
+                                    onChange={(e) => setGeneratedPassword(e.target.value)}
+                                />
+                                <button 
+                                    className="btn" 
+                                    type="button"
+                                    onClick={handleCopyPassword}
+                                    title="Копировать">
+                                    <FaCopy />
+                                </button>
+                                <button 
+                                    className="btn" 
+                                    type="button"
+                                    onClick={handleRefreshPassword}
+                                    title="Обновить">
+                                    <FaSyncAlt />
+                                </button>
+                            </div>
+
                             <div className="progress rounded-0 password-progress">
                                 <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
                                     aria-valuemin={0} aria-valuemax={100}></div>
