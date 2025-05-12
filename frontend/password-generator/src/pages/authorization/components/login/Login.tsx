@@ -64,7 +64,8 @@ const LoginPage: React.FC = () => {
             RoutePaths.PASSWORD_GENERATOR,
             showNotification,
             'Login successful!',
-            'Login failed! Try again!'
+            'Login failed! Try again!',
+            userData.password
         );
     };
 

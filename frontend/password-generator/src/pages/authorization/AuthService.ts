@@ -10,7 +10,6 @@ type AuthRequestData = {
 type AuthResponse = {
     success: boolean;
     message: string;
-    token?: string;
 };
 
 export async function sendAuthRequest(
@@ -30,7 +29,6 @@ export async function sendAuthRequest(
         return {
             success: response.ok,
             message: result || (response.ok ? 'Success' : 'Request failed'),
-            token: result.token,
         };
     } catch (error) {
         console.error('Error:', error);
@@ -48,10 +46,11 @@ export function useHandleAuthResult() {
         showNotification: (message: string, type: 'error' | 'success') => void,
         authSuccessMessage: string,
         authFailedMessage: string,
+        token: string
     ): void => {
         if (result.success && result.message === successMessage) {
-            if (result.token) {
-                Cookies.set('auth_token', result.token, {
+            if (token) {
+                Cookies.set('auth_token', token, {
                     expires: 7,
                     secure: true,
                     sameSite: 'strict'
