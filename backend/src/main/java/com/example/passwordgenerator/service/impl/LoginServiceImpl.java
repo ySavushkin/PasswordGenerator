@@ -1,6 +1,6 @@
 package com.example.passwordgenerator.service.impl;
 
-import com.example.passwordgenerator.DTO.UserDTO;
+import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.domain.entity.User;
 import com.example.passwordgenerator.repository.UserRepository;
 import com.example.passwordgenerator.service.LoginService;
@@ -16,10 +16,10 @@ public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
 
     @Override
-    public String loginUser(UserDTO userDTO) {
-        Optional<User> user = userRepository.findUserByEmail(userDTO.getEmail());
+    public String loginUser(UserDto userDto) {
+        Optional<User> user = userRepository.findUserByEmail(userDto.getEmail());
 
-        if (user.isPresent() && user.get().getPasswordHash().equals(userDTO.getPassword())) {
+        if (user.isPresent() && user.get().getPasswordHash().equals(userDto.getPassword())) {
             return "Login successful";
         } else {
             return "Invalid email or password";
@@ -27,18 +27,19 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String registerUser(UserDTO userDTO) {
-        Optional<User> existingUser = userRepository.findUserByEmail(userDTO.getEmail());
+    public String registerUser(UserDto userDto) {
+        Optional<User> existingUser = userRepository.findUserByEmail(userDto.getEmail());
         if (existingUser.isPresent()) {
             return "User with this email already exists";
         }
 
         User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setPasswordHash(userDTO.getPassword());
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setPasswordHash(userDto.getPassword());
 
         userRepository.save(user);
         return "User registered successfully";
     }
+
 }

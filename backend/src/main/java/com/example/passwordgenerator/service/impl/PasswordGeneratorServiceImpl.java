@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,9 +22,17 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
         if (length <= 0 || keys == CharOptions.NONE) {
             throw new IllegalArgumentException("Invalid length or keys");
         }
+        StringBuilder pool = getPool(keys);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(pool.length());
+            result.append(pool.charAt(index));
+        }
+        return result.toString();
+    }
 
+    private StringBuilder getPool(int keys) {
         StringBuilder pool = new StringBuilder();
-
         if ((keys & CharOptions.UPPERCASE) != 0) {
             pool.append(UPPER);
         }
@@ -42,13 +49,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
         if (pool.isEmpty()) {
             throw new IllegalArgumentException("No character sets selected");
         }
-
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(pool.length());
-            result.append(pool.charAt(index));
-        }
-
-        return result.toString();
+        return pool;
     }
+
 }
