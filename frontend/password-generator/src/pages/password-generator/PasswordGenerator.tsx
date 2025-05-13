@@ -105,7 +105,7 @@ const PasswordGenerator: React.FC = () => {
         <>
             <BubbleBackground />
             <button 
-                type="button" className="btn btn-dark offset-1 col-3 exit-button"
+                type="button" className="btn offset-1 col-3 exit-button"
                 onClick={handleLogout}>
                 Exit
             </button><br></br>
