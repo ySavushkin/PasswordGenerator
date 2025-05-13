@@ -54,7 +54,7 @@ const PasswordGenerator: React.FC = () => {
             note: passwordNote,
         };
 
-        await saveAndUploadPassword('url', newRecord, tableRef);
+        await saveAndUploadPassword(API_ROUTES.addPassword, newRecord, tableRef);
     };
 
     const toggleFlag = (flag: CharOptions) => {
