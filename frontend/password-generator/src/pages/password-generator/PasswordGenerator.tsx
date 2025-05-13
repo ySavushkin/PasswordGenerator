@@ -13,7 +13,8 @@ import { fetchGeneratedPassword, saveAndUploadPassword } from './services/Passwo
 import { API_ROUTES } from '../../constants/APIRoutes';
 import BubbleBackground from './components/bubble-background/BubbleBackground';
 import PasswordTable from './components/password-table/PasswordTable';
-import { PasswordRecord } from './components/password-table/PasswordRecord';
+import { PasswordRecord, SaveRecord } from './components/password-table/PasswordRecord';
+import { CookieTokens } from '../../constants/CookieTokens';
 
 const PasswordGenerator: React.FC = () => {
     const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
@@ -30,7 +31,7 @@ const PasswordGenerator: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        Cookies.remove('auth_token');
+        Cookies.remove(CookieTokens.userToken);
         navigate(RoutePaths.LOGIN);
     };
 
@@ -43,7 +44,12 @@ const PasswordGenerator: React.FC = () => {
     const handleSavePassword = async () => {
         if (generatedPassword === null || generatedPassword === '') return;
 
-        const newRecord: PasswordRecord = {
+        const userKey = Cookies.get(CookieTokens.userToken);
+
+        if (userKey === undefined) return; 
+
+        const newRecord: SaveRecord = {
+            email: userKey,
             password: generatedPassword,
             note: passwordNote,
         };

@@ -1,7 +1,9 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import './PasswordTable.css';
+import Cookies from 'js-cookie';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { PasswordRecord } from './PasswordRecord';
+import { CookieTokens } from '../../../../constants/CookieTokens';
 
 const PasswordTable = forwardRef((props, ref) => {
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
@@ -25,8 +27,22 @@ const PasswordTable = forwardRef((props, ref) => {
         setPasswordRecords(initialData);
 
         const fetchData = async () => {
-            try {
-                const res = await fetch(API_ROUTES.passwordRecords);
+            
+            try {                
+                const currentEmail = Cookies.get(CookieTokens.userToken);
+
+                if (currentEmail === undefined) return;
+
+                const requestedEmail = new URLSearchParams(window.location.search).get('email');
+
+                if (requestedEmail && requestedEmail !== currentEmail) {
+                    console.error('Access to other users data is forbidden');
+                    return;
+                }
+                
+                const url = `${API_ROUTES.passwordRecords}?email=${encodeURIComponent(currentEmail)}`;
+
+                const res = await fetch(url);
                 const data = await res.json();
                 setPasswordRecords(data);
             } catch (error) {

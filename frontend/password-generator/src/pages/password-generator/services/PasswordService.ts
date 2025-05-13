@@ -1,4 +1,4 @@
-import { PasswordRecord } from '../components/password-table/PasswordRecord';
+import { PasswordRecord, SaveRecord } from '../components/password-table/PasswordRecord';
 
 type PasswordRequestData = {
     flags: number;
@@ -34,7 +34,7 @@ export async function fetchGeneratedPassword(
 
 export async function saveAndUploadPassword(
     url: string,
-    request: PasswordRecord,
+    request: SaveRecord,
     tableRef: React.RefObject<{ addRecord: (record: PasswordRecord) => void; } | null>,
 ): Promise<void> {
     try {
