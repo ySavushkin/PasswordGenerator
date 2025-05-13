@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { CookieTokens } from '../../constants/CookieTokens';
 
 type AuthRequestData = {
     email: string;
@@ -50,7 +51,7 @@ export function useHandleAuthResult() {
     ): void => {
         if (result.success && result.message === successMessage) {
             if (token) {
-                Cookies.set('auth_token', token, {
+                Cookies.set(CookieTokens.userToken, token, {
                     expires: 7,
                     secure: true,
                     sameSite: 'strict'

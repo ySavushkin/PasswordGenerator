@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
             showNotification,
             'Login successful!',
             'Login failed! Try again!',
-            userData.password
+            userData.email
         );
     };
 
