@@ -5,7 +5,6 @@ export interface SaveRecord {
 }
 
 export interface GetRecords {
-    email: string;
     records: PasswordRecord[];
 }
 
