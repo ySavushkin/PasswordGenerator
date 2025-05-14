@@ -2,9 +2,18 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import './PasswordTable.css';
 import { PasswordRecord } from './PasswordRecord';
 import { fetchSavedPasswords } from '../../services/PasswordService';
+import Pagination from '../pagination/pagintation';
 
 const PasswordTable = forwardRef((props, ref) => {
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage: number = 5;
+
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
+
+    const totalPages: number = Math.ceil(passwordRecords.length / itemsPerPage);
+
+    const displayedItems = passwordRecords.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     useImperativeHandle(ref, () => {
         return {
@@ -18,18 +27,34 @@ const PasswordTable = forwardRef((props, ref) => {
 
     useEffect(() => {
         const initialData: PasswordRecord[] = [
-            { password: '123456', note: 'Email account' },
+            { password: 'TUN TUN TUN SAHUR', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'SHPIONIRO GOLUBIRO', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'BANANINI SHIMPANZINI', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'BROMBARDIRO CROCADILO', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'BALERINO CAPUCINO', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'BR BR PATAPIM', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'TRALALELO TRALALA', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'YA ZAEBALSYA NAHOOY', note: 'Email account' },
+            { password: 'qwerty', note: 'Work login' },
+            { password: 'LIRILI LARILA', note: 'Email account' },
             { password: 'qwerty', note: 'Work login' },
         ];
 
         setPasswordRecords(initialData);
 
-        const loadData = async () => {
-            const data = await fetchSavedPasswords();
-            setPasswordRecords(data.records);
-        };
+        // const loadData = async () => {
+        //     const data = await fetchSavedPasswords();
+        //     setPasswordRecords(data.records);
+        // };
 
-        loadData();
+        // loadData();
     });
 
     return (
@@ -43,7 +68,7 @@ const PasswordTable = forwardRef((props, ref) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {passwordRecords.map((record, index) => (
+                    {displayedItems.map((record, index) => (
                         <tr key={index}>
                             <td>{record.note}</td>
                             <td>{record.password}</td>
@@ -51,6 +76,7 @@ const PasswordTable = forwardRef((props, ref) => {
                     ))}
                 </tbody>
             </table>
+            <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
         </div>
     );
 });
