@@ -10,7 +10,12 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
 
     return (
         <div className="pagination">
-            <button className="button page-link" aria-label="Previous">
+            <button
+                onClick={() => { 
+                    if (currentPage > 1) 
+                        onPageChange(currentPage - 1)
+                    }}
+                className="button page-link" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </button>
 
@@ -23,7 +28,12 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
                     {index + 1}
                 </button>
             ))}
-            <button className="button page-link" aria-label="Next">
+            <button 
+                onClick={() => { 
+                    if (currentPage < totalPages) 
+                        onPageChange(currentPage + 1)
+                    }}
+                className="button page-link" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </button>
         </div>
