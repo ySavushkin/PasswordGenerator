@@ -2,9 +2,9 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import './PasswordTable.css';
 import { PasswordRecord } from './PasswordRecord';
 import { fetchSavedPasswords } from '../../services/PasswordService';
-import Pagination from '../pagination/pagintation';
+import Pagination from '../pagination/Pagintation';
 
-const PasswordTable = forwardRef((props, ref) => {
+const PasswordTable = forwardRef((_props, ref) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage: number = 5;
@@ -49,12 +49,12 @@ const PasswordTable = forwardRef((props, ref) => {
 
         setPasswordRecords(initialData);
 
-        // const loadData = async () => {
-        //     const data = await fetchSavedPasswords();
-        //     setPasswordRecords(data.records);
-        // };
+        const loadData = async () => {
+            const data = await fetchSavedPasswords();
+            setPasswordRecords(data.records);
+        };
 
-        // loadData();
+        loadData();
     });
 
     return (
