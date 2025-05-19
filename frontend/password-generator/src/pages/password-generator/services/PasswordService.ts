@@ -48,8 +48,12 @@ export async function fetchSavedPasswords(): Promise<GetRecords> {
         if (requestedEmail && requestedEmail !== currentEmail) {
             throw new Error('Access denied');
         }
+
+        const params = new URLSearchParams({
+            email: currentEmail,
+        });
         
-        const url = `${API_ROUTES.passwordRecords}?email=${encodeURIComponent(currentEmail)}`;
+        const url = `${API_ROUTES.passwordRecords}?${params.toString()}`;
 
         const response = await fetch(url, {
             method: 'POST',
