@@ -55,7 +55,7 @@ const PasswordTable = forwardRef((_props, ref) => {
         };
 
         loadData();
-    });
+    }, []);
 
     return (
         <div className="p-3">

@@ -51,7 +51,10 @@ export async function fetchSavedPasswords(): Promise<GetRecords> {
         
         const url = `${API_ROUTES.passwordRecords}?email=${encodeURIComponent(currentEmail)}`;
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        });
         const data = (await response.json()) as GetRecords;
         return data;
     } catch (error) {
