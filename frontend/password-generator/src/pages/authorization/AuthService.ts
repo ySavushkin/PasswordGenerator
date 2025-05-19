@@ -8,7 +8,7 @@ type AuthRequestData = {
     username?: string;
 };
 
-type AuthResponse = {
+export type AuthResponse = {
     success: boolean;
     message: string;
 };
@@ -22,14 +22,13 @@ export async function sendAuthRequest(
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
-            credentials: 'include',
         });
 
         const result = await response.json();
         
         return {
-            success: response.ok,
-            message: result || (response.ok ? 'Success' : 'Request failed'),
+            success: result.success,
+            message: result.message || (response.ok ? 'Success' : 'Request failed'),
         };
     } catch (error) {
         console.error('Error:', error);

@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
             return;
         }
         
-        const registerResult = await sendAuthRequest(API_ROUTES.register, {
+        const registerResult = await sendAuthRequest(API_ROUTES.login, {
             email: userData.email,
             password: userData.password,
         });
