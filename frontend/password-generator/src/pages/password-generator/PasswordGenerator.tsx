@@ -46,7 +46,7 @@ const PasswordGenerator: React.FC = () => {
 
         const userKey = Cookies.get(CookieTokens.userToken);
 
-        if (userKey === undefined) return; 
+        if (userKey === undefined) return;
 
         const newRecord: SaveRecord = {
             email: userKey,
@@ -66,7 +66,6 @@ const PasswordGenerator: React.FC = () => {
         });
     };
 
-
     useEffect(() => {
         const fetchPassword = async () => {
             try {
@@ -82,14 +81,13 @@ const PasswordGenerator: React.FC = () => {
 
         fetchPassword();
     }, [passwordSize, selectedFlags]);
-    
 
-      const handleCopyPassword = () => {
+    const handleCopyPassword = () => {
         navigator.clipboard.writeText(generatedPassword);
         alert('Пароль скопирован!');
     };
 
-      const handleRefreshPassword = async () => {
+    const handleRefreshPassword = async () => {
         try {
             const result = await fetchGeneratedPassword(API_ROUTES.generator, {
                 length: passwordSize,
@@ -104,12 +102,12 @@ const PasswordGenerator: React.FC = () => {
     return (
         <>
             <BubbleBackground />
-            <button 
+            <button
                 type="button" className="btn offset-1 col-3 exit-button"
                 onClick={handleLogout}>
                 Exit
             </button><br></br>
-            
+
             <PasswordIntro />
             <br></br>
 
@@ -128,15 +126,15 @@ const PasswordGenerator: React.FC = () => {
                                     value={generatedPassword}
                                     onChange={(e) => setGeneratedPassword(e.target.value)}
                                 />
-                                <button 
-                                    className="btn" 
+                                <button
+                                    className="btn"
                                     type="button"
                                     onClick={handleCopyPassword}
                                     title="Копировать">
                                     <FaCopy />
                                 </button>
-                                <button 
-                                    className="btn" 
+                                <button
+                                    className="btn"
                                     type="button"
                                     onClick={handleRefreshPassword}
                                     title="Обновить">

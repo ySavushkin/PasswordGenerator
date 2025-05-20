@@ -1,4 +1,4 @@
-import './Pagination.css'
+import './Pagination.css';
 
 interface PaginationProps {
     totalPages: number;
@@ -11,10 +11,10 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
     return (
         <div className="pagination">
             <button
-                onClick={() => { 
-                    if (currentPage > 1) 
-                        onPageChange(currentPage - 1)
-                    }}
+                onClick={() => {
+                    if (currentPage > 1)
+                        onPageChange(currentPage - 1);
+                }}
                 className="button page-link" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </button>
@@ -28,11 +28,11 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
                     {index + 1}
                 </button>
             ))}
-            <button 
-                onClick={() => { 
-                    if (currentPage < totalPages) 
-                        onPageChange(currentPage + 1)
-                    }}
+            <button
+                onClick={() => {
+                    if (currentPage < totalPages)
+                        onPageChange(currentPage + 1);
+                }}
                 className="button page-link" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </button>

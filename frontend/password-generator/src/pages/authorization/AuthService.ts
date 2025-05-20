@@ -25,7 +25,7 @@ export async function sendAuthRequest(
         });
 
         const result = await response.json();
-        
+
         return {
             success: result.success,
             message: result.message || (response.ok ? 'Success' : 'Request failed'),
@@ -46,14 +46,14 @@ export function useHandleAuthResult() {
         showNotification: (message: string, type: 'error' | 'success') => void,
         authSuccessMessage: string,
         authFailedMessage: string,
-        token: string
+        token: string,
     ): void => {
         if (result.success && result.message === successMessage) {
             if (token) {
                 Cookies.set(CookieTokens.userToken, token, {
                     expires: 7,
                     secure: true,
-                    sameSite: 'strict'
+                    sameSite: 'strict',
                 });
             }
 

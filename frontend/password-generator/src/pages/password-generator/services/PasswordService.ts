@@ -36,7 +36,7 @@ export async function fetchGeneratedPassword(
 }
 
 export async function fetchSavedPasswords(): Promise<GetRecords> {
-    try {                
+    try {
         const currentEmail = Cookies.get(CookieTokens.userToken);
 
         if (currentEmail === undefined) {
@@ -52,7 +52,7 @@ export async function fetchSavedPasswords(): Promise<GetRecords> {
         const params = new URLSearchParams({
             email: currentEmail,
         });
-        
+
         const url = `${API_ROUTES.passwordRecords}?${params.toString()}`;
 
         const response = await fetch(url, {

@@ -29,7 +29,6 @@ const RegistrationForm: React.FC = () => {
         setTimeout(() => setNotification({ ...notification, show: false }), 5000);
     };
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData(prev => ({
@@ -82,24 +81,24 @@ const RegistrationForm: React.FC = () => {
             password: userData.password,
         });
 
-        handleAuthResult( 
-            registerResult, 
-            'User registered successfully', 
+        handleAuthResult(
+            registerResult,
+            'User registered successfully',
             RoutePaths.PASSWORD_GENERATOR,
             showNotification,
             'Registration successful!',
             'Registration error. Please try again.',
-            userData.password
+            userData.password,
         );
     };
 
     return (
         <div className="card">
             {notification.show && (
-            <div className={`notification ${notification.type}`}>
-                {notification.message}
-            </div>
-        )}
+                <div className={`notification ${notification.type}`}>
+                    {notification.message}
+                </div>
+            )}
             <div className="card2">
                 <form className="form" onSubmit={handleSubmit}>
                     <p className="form-header">Sign Up</p>

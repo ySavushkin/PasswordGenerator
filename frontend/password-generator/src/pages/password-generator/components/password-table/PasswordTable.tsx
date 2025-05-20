@@ -4,12 +4,12 @@ import { PasswordRecord } from './PasswordRecord';
 import { fetchSavedPasswords } from '../../services/PasswordService';
 import Pagination from '../pagination/Pagintation';
 
-const PasswordTable = forwardRef((_props, ref) => {
+const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
     const itemsPerPage: number = 5;
 
     const [currentPage, setCurrentPage] = useState(1);
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
-    const [totalPages, setTotalPages] = useState<number>(0); 
+    const [totalPages, setTotalPages] = useState<number>(0);
     const [displayedItems, setDisplayedItems] = useState<PasswordRecord[]>([]);
 
     useImperativeHandle(ref, () => {
@@ -28,7 +28,7 @@ const PasswordTable = forwardRef((_props, ref) => {
                 const data = await fetchSavedPasswords();
                 setPasswordRecords(data.records);
             } catch (error) {
-                console.error("Failed to fetch passwords", error);
+                console.error('Failed to fetch passwords', error);
             }
         };
 
@@ -38,10 +38,10 @@ const PasswordTable = forwardRef((_props, ref) => {
     useEffect(() => {
         const total = Math.ceil(passwordRecords.length / itemsPerPage);
         setTotalPages(total);
-    
+
         const items = passwordRecords.slice(
             (currentPage - 1) * itemsPerPage,
-            currentPage * itemsPerPage
+            currentPage * itemsPerPage,
         );
         setDisplayedItems(items);
     }, [passwordRecords, currentPage]);
