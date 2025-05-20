@@ -68,7 +68,7 @@ const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
             {
                 totalPages > 1 &&
                     <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
-            };
+            }
         </div>
     );
 });
