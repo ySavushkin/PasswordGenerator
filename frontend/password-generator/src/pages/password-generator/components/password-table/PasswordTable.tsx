@@ -57,7 +57,7 @@ const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
                     </tr>
                 </thead>
                 <tbody>
-                    {displayedItems.map((record, index) => (
+                    {displayedItems && displayedItems.map((record, index) => (
                         <tr key={index}>
                             <td>{record.note}</td>
                             <td>{record.password}</td>
