@@ -5,15 +5,12 @@ import { fetchSavedPasswords } from '../../services/PasswordService';
 import Pagination from '../pagination/Pagintation';
 
 const PasswordTable = forwardRef((_props, ref) => {
-    const [currentPage, setCurrentPage] = useState(1);
-
     const itemsPerPage: number = 5;
 
+    const [currentPage, setCurrentPage] = useState(1);
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
-
-    const totalPages: number = Math.ceil(passwordRecords.length / itemsPerPage);
-
-    const displayedItems = passwordRecords.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const [totalPages, setTotalPages] = useState<number>(0); 
+    const [displayedItems, setDisplayedItems] = useState<PasswordRecord[]>([]);
 
     useImperativeHandle(ref, () => {
         return {
@@ -26,36 +23,28 @@ const PasswordTable = forwardRef((_props, ref) => {
     };
 
     useEffect(() => {
-        const initialData: PasswordRecord[] = [
-            { password: 'TUN TUN TUN SAHUR', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'SHPIONIRO GOLUBIRO', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'BANANINI SHIMPANZINI', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'BROMBARDIRO CROCADILO', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'BALERINO CAPUCINO', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'BR BR PATAPIM', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'TRALALELO TRALALA', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'YA ZAEBALSYA NAHOOY', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-            { password: 'LIRILI LARILA', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-        ];
-
-        setPasswordRecords(initialData);
-
         const loadData = async () => {
-            const data = await fetchSavedPasswords();
-            setPasswordRecords(data.records);
+            try {
+                const data = await fetchSavedPasswords();
+                setPasswordRecords(data.records);
+            } catch (error) {
+                console.error("Failed to fetch passwords", error);
+            }
         };
 
         loadData();
     }, []);
+
+    useEffect(() => {
+        const total = Math.ceil(passwordRecords.length / itemsPerPage);
+        setTotalPages(total);
+    
+        const items = passwordRecords.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+        );
+        setDisplayedItems(items);
+    }, [passwordRecords, currentPage]);
 
     return (
         <div className="p-3">
@@ -76,7 +65,10 @@ const PasswordTable = forwardRef((_props, ref) => {
                     ))}
                 </tbody>
             </table>
-            <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
+            {
+                totalPages > 1 &&
+                    <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
+            };
         </div>
     );
 });
