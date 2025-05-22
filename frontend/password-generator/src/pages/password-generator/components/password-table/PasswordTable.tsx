@@ -27,8 +27,8 @@ const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
             try {
                 const data = await fetchSavedPasswords();
                 console.log('Fetched data: ' + data);
-                if (Array.isArray(data.records))
-                    setPasswordRecords(data.records);
+                if (Array.isArray(data))
+                    setPasswordRecords(data);
                 else {
                     setPasswordRecords([]);
                     throw new Error('Password records are not array');
