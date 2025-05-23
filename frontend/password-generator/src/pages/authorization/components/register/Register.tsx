@@ -88,7 +88,7 @@ const RegistrationForm: React.FC = () => {
             showNotification,
             'Registration successful!',
             'Registration error. Please try again.',
-            userData.password,
+            userData.email,
         );
     };
 
