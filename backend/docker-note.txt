@@ -1,0 +1,24 @@
+1)Відкрийте термінал у IDE.
+
+Ви побачите:
+PS ......\PasswordGenerator>
+
+2)Напишіть команду:
+cd backend
+
+Ви побачите:
+PS ......\PasswordGenerator\backend>
+
+3)Напишіть команду для підняття стеків:
+docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
+
+Після завершення роботи команди перейдіть у Docker Desktop
+та знайдіть контейнер фронтенду password_gen_frontend.
+
+4)Натисніть на порти 80:80.
+Відкриється додаток на localhost у браузері.
+
+5)Для видалення всіх контейнерів та образів напишіть команду:
+docker system prune -a
+
+Але перед цим обов’язково зупиніть усі контейнери.
