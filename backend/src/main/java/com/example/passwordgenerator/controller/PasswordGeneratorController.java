@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/passwordGenerator")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:80")
 public class PasswordGeneratorController {
 
     private final PasswordGeneratorService passwordGeneratorService;
