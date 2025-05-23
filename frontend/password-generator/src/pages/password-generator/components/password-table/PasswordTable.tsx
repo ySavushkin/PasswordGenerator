@@ -1,13 +1,16 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import './PasswordTable.css';
-import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { PasswordRecord } from './PasswordRecord';
+import { fetchSavedPasswords } from '../../services/PasswordService';
+import Pagination from '../pagination/Pagintation';
 
-//Змінив томущо писало src/pages/password-generator/components/password-table/PasswordTable.tsx(6,35): error TS6133: 'props' is declared but its value is never read.
-//const PasswordTable = forwardRef((props, ref) => { #'props' оголошено, але не використовується
-const PasswordTable = forwardRef((_props, ref) => {
+const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
+    const itemsPerPage: number = 5;
 
+    const [currentPage, setCurrentPage] = useState(1);
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [displayedItems, setDisplayedItems] = useState<PasswordRecord[]>([]);
 
     useImperativeHandle(ref, () => {
         return {
@@ -20,24 +23,34 @@ const PasswordTable = forwardRef((_props, ref) => {
     };
 
     useEffect(() => {
-        const initialData: PasswordRecord[] = [
-            { password: '123456', note: 'Email account' },
-            { password: 'qwerty', note: 'Work login' },
-        ];
-
-        setPasswordRecords(initialData);
-
-        const fetchData = async () => {
+        const loadData = async () => {
             try {
-                const res = await fetch(API_ROUTES.passwordRecords);
-                const data = await res.json();
-                setPasswordRecords(data);
+                const data = await fetchSavedPasswords();
+                console.log('Fetched data: ' + data);
+                if (Array.isArray(data))
+                    setPasswordRecords(data);
+                else {
+                    setPasswordRecords([]);
+                    throw new Error('Password records are not array');
+                }
             } catch (error) {
-                console.error('Failed to load:', error);
+                console.error('Failed to fetch passwords', error);
             }
         };
-        fetchData();
+
+        loadData();
     }, []);
+
+    useEffect(() => {
+        const total = Math.ceil(passwordRecords.length / itemsPerPage);
+        setTotalPages(total);
+
+        const items = passwordRecords.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage,
+        );
+        setDisplayedItems(items);
+    }, [passwordRecords, currentPage]);
 
     return (
         <div className="p-3">
@@ -50,7 +63,7 @@ const PasswordTable = forwardRef((_props, ref) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {passwordRecords.map((record, index) => (
+                    {displayedItems && displayedItems.map((record, index) => (
                         <tr key={index}>
                             <td>{record.note}</td>
                             <td>{record.password}</td>
@@ -58,6 +71,10 @@ const PasswordTable = forwardRef((_props, ref) => {
                     ))}
                 </tbody>
             </table>
+            {
+                totalPages > 1 &&
+                    <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
+            }
         </div>
     );
 });

@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
         setNotification({ message, type, show: true });
         setTimeout(() => setNotification({ ...notification, show: false }), 5000);
     };
-     
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData(prev => ({
@@ -41,8 +41,7 @@ const LoginPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        
+
         if (!ValidationService.validateEmail(userData.email)) {
             showNotification('Please enter a valid email address', 'error');
             return;
@@ -52,20 +51,20 @@ const LoginPage: React.FC = () => {
             showNotification('Password must be at least 8 characters long', 'error');
             return;
         }
-        
-        const registerResult = await sendAuthRequest(API_ROUTES.register, {
+
+        const registerResult = await sendAuthRequest(API_ROUTES.login, {
             email: userData.email,
             password: userData.password,
         });
-        
-        handleAuthResult( 
-            registerResult, 
-            'Login successful', 
+
+        handleAuthResult(
+            registerResult,
+            'Login successful',
             RoutePaths.PASSWORD_GENERATOR,
             showNotification,
             'Login successful!',
             'Login failed! Try again!',
-            userData.password
+            userData.email,
         );
     };
 
@@ -102,7 +101,7 @@ const LoginPage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                           {notification && (
+                        {notification && (
                             <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>
                                 {notification.message}
                             </div>

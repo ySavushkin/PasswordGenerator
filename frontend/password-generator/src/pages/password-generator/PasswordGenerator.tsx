@@ -13,7 +13,8 @@ import { fetchGeneratedPassword, saveAndUploadPassword } from './services/Passwo
 import { API_ROUTES } from '../../constants/APIRoutes';
 import BubbleBackground from './components/bubble-background/BubbleBackground';
 import PasswordTable from './components/password-table/PasswordTable';
-import { PasswordRecord } from './components/password-table/PasswordRecord';
+import { PasswordRecord, SaveRecord } from './components/password-table/PasswordRecord';
+import { CookieTokens } from '../../constants/CookieTokens';
 
 const PasswordGenerator: React.FC = () => {
     const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
@@ -30,7 +31,7 @@ const PasswordGenerator: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        Cookies.remove('auth_token');
+        Cookies.remove(CookieTokens.userToken);
         navigate(RoutePaths.LOGIN);
     };
 
@@ -43,12 +44,17 @@ const PasswordGenerator: React.FC = () => {
     const handleSavePassword = async () => {
         if (generatedPassword === null || generatedPassword === '') return;
 
-        const newRecord: PasswordRecord = {
+        const userKey = Cookies.get(CookieTokens.userToken);
+
+        if (userKey === undefined) return;
+
+        const newRecord: SaveRecord = {
+            email: userKey,
             password: generatedPassword,
             note: passwordNote,
         };
 
-        await saveAndUploadPassword('url', newRecord, tableRef);
+        await saveAndUploadPassword(API_ROUTES.addPassword, newRecord, tableRef);
     };
 
     const toggleFlag = (flag: CharOptions) => {
@@ -59,7 +65,6 @@ const PasswordGenerator: React.FC = () => {
             return prev ^ flag;
         });
     };
-
 
     useEffect(() => {
         const fetchPassword = async () => {
@@ -76,14 +81,13 @@ const PasswordGenerator: React.FC = () => {
 
         fetchPassword();
     }, [passwordSize, selectedFlags]);
-    
 
-      const handleCopyPassword = () => {
+    const handleCopyPassword = () => {
         navigator.clipboard.writeText(generatedPassword);
         alert('Пароль скопирован!');
     };
 
-      const handleRefreshPassword = async () => {
+    const handleRefreshPassword = async () => {
         try {
             const result = await fetchGeneratedPassword(API_ROUTES.generator, {
                 length: passwordSize,
@@ -98,12 +102,12 @@ const PasswordGenerator: React.FC = () => {
     return (
         <>
             <BubbleBackground />
-            <button 
-                type="button" className="btn btn-dark offset-1 col-3 exit-button"
+            <button
+                type="button" className="btn offset-1 col-3 exit-button"
                 onClick={handleLogout}>
                 Exit
             </button><br></br>
-            
+
             <PasswordIntro />
             <br></br>
 
@@ -122,15 +126,15 @@ const PasswordGenerator: React.FC = () => {
                                     value={generatedPassword}
                                     onChange={(e) => setGeneratedPassword(e.target.value)}
                                 />
-                                <button 
-                                    className="btn" 
+                                <button
+                                    className="btn"
                                     type="button"
                                     onClick={handleCopyPassword}
                                     title="Копировать">
                                     <FaCopy />
                                 </button>
-                                <button 
-                                    className="btn" 
+                                <button
+                                    className="btn"
                                     type="button"
                                     onClick={handleRefreshPassword}
                                     title="Обновить">

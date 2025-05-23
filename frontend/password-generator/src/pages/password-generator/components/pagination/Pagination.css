@@ -1,0 +1,13 @@
+.active {
+    background-color: rgba(247, 23, 228, 0.671) !important;
+}
+
+.pagination {
+    gap: 4px;
+    line-height: 1;
+    padding: 2px 8px;    
+    padding-top: 8px;
+    justify-content: center;
+    position: relative;
+}
+

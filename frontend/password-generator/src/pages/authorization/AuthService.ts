@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { CookieTokens } from '../../constants/CookieTokens';
 
 type AuthRequestData = {
     email: string;
@@ -7,7 +8,7 @@ type AuthRequestData = {
     username?: string;
 };
 
-type AuthResponse = {
+export type AuthResponse = {
     success: boolean;
     message: string;
 };
@@ -21,14 +22,13 @@ export async function sendAuthRequest(
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
-            credentials: 'include',
         });
 
         const result = await response.json();
-        
+
         return {
-            success: response.ok,
-            message: result || (response.ok ? 'Success' : 'Request failed'),
+            success: result.success,
+            message: result.message || (response.ok ? 'Success' : 'Request failed'),
         };
     } catch (error) {
         console.error('Error:', error);
@@ -46,14 +46,14 @@ export function useHandleAuthResult() {
         showNotification: (message: string, type: 'error' | 'success') => void,
         authSuccessMessage: string,
         authFailedMessage: string,
-        token: string
+        token: string,
     ): void => {
         if (result.success && result.message === successMessage) {
             if (token) {
-                Cookies.set('auth_token', token, {
+                Cookies.set(CookieTokens.userToken, token, {
                     expires: 7,
                     secure: true,
-                    sameSite: 'strict'
+                    sameSite: 'strict',
                 });
             }
 
