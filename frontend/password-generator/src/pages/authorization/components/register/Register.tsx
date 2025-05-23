@@ -88,7 +88,8 @@ const RegistrationForm: React.FC = () => {
             RoutePaths.PASSWORD_GENERATOR,
             showNotification,
             'Registration successful!',
-            'Registration error. Please try again.'
+            'Registration error. Please try again.',
+            userData.password
         );
     };
 

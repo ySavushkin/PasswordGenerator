@@ -1,4 +1,4 @@
-#V5
+
 version: '3.8'
 
 services:
@@ -35,45 +35,26 @@ services:
     networks:
       - app_network
 
+  frontend:
+    container_name: password_gen_frontend
+    build:
+      context: ../frontend/password-generator
+      dockerfile: Dockerfile-frontend
+
+    ports:
+      - "80:80"
+
+    depends_on:
+      - demo
+    networks:
+      - app_network
+
 networks:
   app_network:
-    #external: true
     driver: bridge
 
-#////////////////////////////////////////////////////////////////////////////////////////////////////////
-#Підняття стеків
-#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
 
-#  docker compose down -v
-#Або це видалить монтовані данні docker compose down -v; Remove-Item -Recurse -Force .\data\db
 
-#  docker compose up --build -d
 
-#Перевірка логів контейнерів
-#docker logs password_gen_demo
-#docker logs password_gen_db
 
-#???
-#1)Перевірте з'єднання з базою даних:
-#docker exec -it password_gen_db psql -U user_n -d PasswordGenerator_DB
-#2)Перевірити всі користувачів у базі даних:
-#\du
-#3)Перевірка наявності таблиць у базі даних:
-#\dt
-#4)Перевірка прав доступу для користувача:
-#\l
-#5)Вихід:
-#\q
 
-#Підняття стеків
-#docker-compose -f docker-compose.yml up -d
-#docker-compose -f docker-compose-locust.yml up -d
-
-#Або ось так
-#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
-
-#виконує очистку всієї Docker-системи від непотрібних об'єктів
-#docker system prune -a
-
-#docker network ls
-#docker network inspect

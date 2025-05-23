@@ -8,7 +8,7 @@ services:
     ports:
       - "8089:8089"
     volumes:
-      - ./mnt:/mnt/locust  # Монтуємо всю папку mnt
+      - ./mnt:/mnt/locust
     command: ["-f", "/mnt/locust/locustfile.py", "--master"]
     environment:
       - LOCUST_MODE=master
@@ -23,7 +23,7 @@ services:
     image: locustio/locust
     container_name: locust-worker
     volumes:
-      - ./mnt:/mnt/locust  # Те саме
+      - ./mnt:/mnt/locust
     command: ["-f", "/mnt/locust/locustfile.py", "--worker", "--master-host", "locust-master"]
     environment:
       - LOCUST_MODE=worker
@@ -35,17 +35,6 @@ services:
 
 networks:
   app_network:
-    #external: true
     driver: bridge
 
-#Підняття стеків
-#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
 
-#docker-compose -f docker-compose.yml up -d
-#docker-compose -f docker-compose-locust.yml up -d
-
-#Або ось так
-#docker-compose -f docker-compose.yml -f docker-compose-locust.yml up -d
-
-#виконує очистку всієї Docker-системи від непотрібних об'єктів
-#docker system prune -a

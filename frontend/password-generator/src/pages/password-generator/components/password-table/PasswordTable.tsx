@@ -3,7 +3,10 @@ import './PasswordTable.css';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { PasswordRecord } from './PasswordRecord';
 
-const PasswordTable = forwardRef((props, ref) => {
+//Змінив томущо писало src/pages/password-generator/components/password-table/PasswordTable.tsx(6,35): error TS6133: 'props' is declared but its value is never read.
+//const PasswordTable = forwardRef((props, ref) => { #'props' оголошено, але не використовується
+const PasswordTable = forwardRef((_props, ref) => {
+
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
 
     useImperativeHandle(ref, () => {
