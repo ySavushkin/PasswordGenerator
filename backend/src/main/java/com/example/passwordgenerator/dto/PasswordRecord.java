@@ -5,19 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavePasswordDTO {
-
-    @NotNull
-    private String email;
-
-    @NotNull
+public class PasswordRecord {
     private String password;
-
     private String note;
 }

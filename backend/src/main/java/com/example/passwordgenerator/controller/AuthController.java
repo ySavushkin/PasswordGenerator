@@ -1,5 +1,6 @@
 package com.example.passwordgenerator.controller;
 
+import com.example.passwordgenerator.dto.ResponseDto;
 import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody UserDto userDTO) {
+    public ResponseDto register(@RequestBody UserDto userDTO) {
         return loginService.registerUser(userDTO);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDTO) {
+    public ResponseDto login(@RequestBody UserDto userDTO) {
         return loginService.loginUser(userDTO);
     }
 }

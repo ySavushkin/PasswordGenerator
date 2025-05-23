@@ -1,18 +1,16 @@
 package com.example.passwordgenerator.controller;
 
-import com.example.passwordgenerator.DTO.SavePasswordDTO;
-import com.example.passwordgenerator.DTO.UserDTO;
+import com.example.passwordgenerator.dto.PasswordRecord;
+import com.example.passwordgenerator.dto.SavePasswordDTO;
 import com.example.passwordgenerator.domain.entity.Password;
 import com.example.passwordgenerator.domain.entity.User;
-import com.example.passwordgenerator.service.LoginService;
 import com.example.passwordgenerator.service.PasswordService;
 import com.example.passwordgenerator.service.UserService;
-import java.util.Collections;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -39,7 +37,7 @@ public class PasswordController {
         Password newPassword = new Password();
         newPassword.setPasswordHash(savePasswordDTO.getPassword());
         newPassword.setUser(currentUser.get());
-        newPassword.setSource(savePasswordDTO.getPurpose());
+        newPassword.setSource(savePasswordDTO.getNote());
 
         passwordService.savePassword(newPassword);
 
@@ -47,7 +45,7 @@ public class PasswordController {
     }
 
     @GetMapping("/email")
-    public List<Password> getPasswordsByUser(@RequestParam String email) {
+    public List<PasswordRecord> getPasswordsByUser(@RequestParam String email) {
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (userOptional.isEmpty()) {
@@ -58,11 +56,16 @@ public class PasswordController {
         User user = userOptional.get();
         List<Password> passwords = passwordService.getPasswordsByUser(user);
 
-        if (passwords.isEmpty()) {
+        List<PasswordRecord> passwordRecords = new ArrayList<>();
+        for(Password password : passwords) {
+            passwordRecords.add(new PasswordRecord(password.getPasswordHash(), password.getSource()));
+        }
+
+        if (passwordRecords.isEmpty()) {
             System.out.println("collection empty");
             return Collections.emptyList();
         }
 
-        return passwords;
+        return passwordRecords;
     }
 }
