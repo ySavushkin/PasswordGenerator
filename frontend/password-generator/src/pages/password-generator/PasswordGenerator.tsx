@@ -117,7 +117,7 @@ const PasswordGenerator: React.FC = () => {
                     <div className="PasswordForm">
 
                         <div className="mb-3 password-container">
-                            <div className="input-group">
+                            <div className="d-flex">
                                 <input
                                     className="form-control rounded-0 password-input"
                                     id="passwordInput"
