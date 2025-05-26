@@ -15,6 +15,7 @@ import BubbleBackground from './components/bubble-background/BubbleBackground';
 import PasswordTable from './components/password-table/PasswordTable';
 import { PasswordRecord, SaveRecord } from './components/password-table/PasswordRecord';
 import { CookieTokens } from '../../constants/CookieTokens';
+import ProgressBar from './components/progress-bar/ProgressBar';
 
 const PasswordGenerator: React.FC = () => {
     const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
@@ -142,10 +143,7 @@ const PasswordGenerator: React.FC = () => {
                                 </button>
                             </div>
 
-                            <div className="progress rounded-0 password-progress">
-                                <div id="passwordStrengthBar" className="progress-bar mb-0 mt-0" role="progressbar" style={{ width: `${50}%` }} aria-valuenow={0}
-                                    aria-valuemin={0} aria-valuemax={100}></div>
-                            </div>
+                            <ProgressBar percent={100}/>
                         </div>
 
                         <label htmlFor="customRange" className="PasswordLength">
