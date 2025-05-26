@@ -9,7 +9,7 @@ import { PasswordSettings } from './components/password-options/PasswordSettings
 import PasswordSizeInput from './components/PasswordSizeInput';
 import PasswordIntro from './components/password-intro/PasswordIntro';
 import { CharOptions } from './components/password-options/CharOptions';
-import { fetchGeneratedPassword, saveAndUploadPassword } from './services/PasswordService';
+import { fetchGeneratedPassword, getSafetyPercent, saveAndUploadPassword } from './services/PasswordService';
 import { API_ROUTES } from '../../constants/APIRoutes';
 import BubbleBackground from './components/bubble-background/BubbleBackground';
 import PasswordTable from './components/password-table/PasswordTable';
@@ -24,6 +24,7 @@ const PasswordGenerator: React.FC = () => {
 
     const [passwordNote, setPasswordNote] = useState<string>('');
     const [passwordSize, setPasswordSize] = useState<number>(16);
+    const [safetyPercent, setSafetyPercent] = useState<number>(0);
     const [selectedFlags, setSelectedFlags] = useState<number>(
         CharOptions.Uppercase | CharOptions.Lowercase | CharOptions.Numbers | CharOptions.Symbols,
     );
@@ -82,6 +83,19 @@ const PasswordGenerator: React.FC = () => {
 
         fetchPassword();
     }, [passwordSize, selectedFlags]);
+
+    useEffect(() => {
+        const fetchSafetyPercent = async () => {
+            try {
+                const result = await getSafetyPercent(API_ROUTES.passwordSafety, generatedPassword);
+                setSafetyPercent(result);
+            } catch (error) {
+                console.error('Failed to get password safety percent', error);
+            }
+        };
+
+        fetchSafetyPercent();
+    }, [generatedPassword]);
 
     const handleCopyPassword = () => {
         navigator.clipboard.writeText(generatedPassword);
@@ -143,7 +157,7 @@ const PasswordGenerator: React.FC = () => {
                                 </button>
                             </div>
 
-                            <ProgressBar percent={100}/>
+                            <ProgressBar percent={safetyPercent}/>
                         </div>
 
                         <label htmlFor="customRange" className="PasswordLength">
