@@ -23,4 +23,5 @@ public class PasswordGeneratorController {
                 new GeneratedPassword(passwordGeneratorService.generate(passwordDto.getLength(), passwordDto.getFlags())), HttpStatus.OK);
     }
 
+
 }

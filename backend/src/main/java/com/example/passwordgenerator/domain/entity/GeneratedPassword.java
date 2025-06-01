@@ -1,6 +1,5 @@
 package com.example.passwordgenerator.domain.entity;
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 @Getter

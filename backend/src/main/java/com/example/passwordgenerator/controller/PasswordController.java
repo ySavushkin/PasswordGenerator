@@ -9,6 +9,7 @@ import com.example.passwordgenerator.service.UserService;
 
 import java.util.*;
 
+import com.example.passwordgenerator.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +19,19 @@ import org.springframework.web.bind.annotation.*;
 public class PasswordController {
 
     private final PasswordService passwordService;
+
     private final UserService userService;
 
+    private final PasswordUtils passwordUtils;
+
     @Autowired
-    public PasswordController(PasswordService passwordService, UserService userService) {
+    public PasswordController(
+            PasswordService passwordService,
+            UserService userService,
+            PasswordUtils passwordUtils) {
         this.passwordService = passwordService;
         this.userService = userService;
+        this.passwordUtils = passwordUtils;
     }
 
     @PostMapping("/save")
@@ -67,5 +75,10 @@ public class PasswordController {
         }
 
         return passwordRecords;
+    }
+
+    @PostMapping("/strength")
+    public int getPasswordStrength(@RequestBody String password) {
+        return passwordUtils.evaluatePasswordStrength(password);
     }
 }
