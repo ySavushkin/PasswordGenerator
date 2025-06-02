@@ -41,4 +41,5 @@ public class User {
         this.email = email;
         this.passwordHash = passwordHash;
     }
+
 }

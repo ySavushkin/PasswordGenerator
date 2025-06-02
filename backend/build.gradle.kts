@@ -35,8 +35,9 @@ dependencies {
     annotationProcessor ("org.mapstruct:mapstruct-processor:1.6.3")
 
     implementation("org.postgresql:postgresql:42.7.5")
-    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
+    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
     implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

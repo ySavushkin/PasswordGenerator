@@ -29,7 +29,7 @@ public class Password {
     private String passwordHash;
 
     @Column(nullable = false, length = 255)
-    private String source; // Для какого сервиса хранится пароль
+    private String source;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

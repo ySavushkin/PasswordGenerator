@@ -11,11 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordDto {
+public class SavePasswordDTO {
 
     @NotNull
-    private Integer length;
-    @NotNull
-    private Integer flags;
+    private String email;
 
+    @NotNull
+    private String password;
+
+    private String note;
 }

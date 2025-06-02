@@ -1,5 +1,6 @@
 package com.example.passwordgenerator.service.impl;
 
+import com.example.passwordgenerator.dto.ResponseDto;
 import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.domain.entity.User;
 import com.example.passwordgenerator.repository.UserRepository;
@@ -16,30 +17,30 @@ public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
 
     @Override
-    public String loginUser(UserDto UserDto) {
-        Optional<User> user = userRepository.findUserByEmail(UserDto.getEmail());
+    public ResponseDto loginUser(UserDto userDto) {
+        Optional<User> user = userRepository.findUserByEmail(userDto.getEmail());
 
-        if (user.isPresent() && user.get().getPasswordHash().equals(UserDto.getPassword())) {
-            return "Login successful";
+        if (user.isPresent() && user.get().getPasswordHash().equals(userDto.getPassword())) {
+            return new ResponseDto(true, "Login successful");
         } else {
-            return "Invalid email or password";
+            return new ResponseDto(false, "Bad request!");
         }
     }
 
     @Override
-    public String registerUser(UserDto UserDto) {
-        Optional<User> existingUser = userRepository.findUserByEmail(UserDto.getEmail());
+    public ResponseDto registerUser(UserDto userDto) {
+        Optional<User> existingUser = userRepository.findUserByEmail(userDto.getEmail());
         if (existingUser.isPresent()) {
-            return "User with this email already exists";
+            return new ResponseDto(false, "User with this email already exists!");
         }
 
         User user = new User();
-        user.setUsername(UserDto.getUsername());
-        user.setEmail(UserDto.getEmail());
-        user.setPasswordHash(UserDto.getPassword());
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setPasswordHash(userDto.getPassword());
 
         userRepository.save(user);
-        return "User registered successfully";
+        return new ResponseDto(true, "User registered successfully");
     }
 
 }

@@ -1,21 +1,17 @@
 package com.example.passwordgenerator.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordDto {
+public class PasswordRecord {
 
-    @NotNull
-    private Integer length;
-    @NotNull
-    private Integer flags;
+    private String password;
+    private String note;
 
 }
