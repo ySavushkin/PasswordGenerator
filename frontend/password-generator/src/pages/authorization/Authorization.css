@@ -1,0 +1,136 @@
+.form {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+    background-color: #171717;
+    transition: 0.4s ease-in-out;
+}
+
+.card, .form {
+    border-radius: 22px;
+}
+
+.card {
+    min-width: 25em;
+    max-width: 30em;
+    background-image: linear-gradient(163deg, #ffffff14 0%, #8800ff 100%);
+    transition: all 0.3s;
+    padding: 0.3em;
+}
+
+.card2 {
+    transition: all 0.2s;
+}
+
+.card2:hover {
+    transform: scale(0.98);
+    border-radius: 20px;
+}
+
+.card:hover {
+    box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.3);
+}
+
+.form-header {
+    text-align: center;
+    margin: 1em;
+    color: rgb(255, 255, 255);
+    font-size: 2.4em;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border-radius: 25px;
+    padding: 0.6em;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #171717;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.input-icon {
+    height: 1.3em;
+    width: 2em;
+    fill: white;
+}
+
+.input-field {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #d3d3d3;
+}
+
+.form .btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2.5em;
+}
+
+
+.button {
+    margin-bottom: 1.2em;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: 0.4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
+.button:hover {
+    background-color: red;
+    color: white;
+}
+
+.hint {
+    color: #ffffff;
+    margin-bottom: 2em;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.notification.error {
+    background-color: #ff6b6b;
+}
+
+.notification.success {
+    background-color: #4caf50;
+}
+
+@keyframes slideIn {
+    from { top: -50px; opacity: 0; }
+    to { top: 20px; opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.notification.hide {
+    animation: fadeOut 0.5s ease-out;
+}
