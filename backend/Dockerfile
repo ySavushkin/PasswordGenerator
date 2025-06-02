@@ -44,4 +44,3 @@ EXPOSE 8080
 
 # Запускаємо перший .jar файл в директорії
 CMD ["java", "-jar", "/app/PasswordGenerator-0.0.1-SNAPSHOT.jar"]
-
