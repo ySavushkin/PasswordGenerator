@@ -18,16 +18,6 @@ public class PasswordServiceImpl implements PasswordService {
     private final PasswordRepository passwordRepository;
 
     @Override
-    public Optional<Password> findPasswordById(Long id) {
-        return passwordRepository.findById(id);
-    }
-
-    @Override
-    public void deletePassword(Long id) {
-        passwordRepository.deleteById(id);
-    }
-
-    @Override
     public Password savePassword(Password password) {
         return passwordRepository.save(password);
     }

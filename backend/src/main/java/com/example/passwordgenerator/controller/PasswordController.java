@@ -81,4 +81,5 @@ public class PasswordController {
     public int getPasswordStrength(@RequestBody String password) {
         return passwordUtils.evaluatePasswordStrength(password);
     }
+
 }

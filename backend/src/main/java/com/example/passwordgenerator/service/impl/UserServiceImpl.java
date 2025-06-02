@@ -16,21 +16,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public Optional<User> findUserByEmail(String email){ return userRepository.findUserByEmail(email); }
 
 }

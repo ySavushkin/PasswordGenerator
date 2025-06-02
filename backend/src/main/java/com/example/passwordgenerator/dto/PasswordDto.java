@@ -15,7 +15,6 @@ public class PasswordDto {
 
     @NotNull
     private Integer length;
-
     @NotNull
     private Integer flags;
 
