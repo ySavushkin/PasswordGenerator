@@ -29,6 +29,7 @@ dependencies {
     implementation("org.liquibase:liquibase-core:4.19.1")
     implementation("org.mapstruct:mapstruct:1.6.3")
     implementation ("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     compileOnly("org.projectlombok:lombok")
 
     annotationProcessor("org.projectlombok:lombok")
@@ -48,6 +49,14 @@ dependencies {
 
     //Додав для PasswordRepositoryTest
     testImplementation("com.h2database:h2")
+
+    //JWT
+    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
+    implementation("org.springframework.security:spring-security-core:6.4.5")
+
 }
 
 tasks.withType<Test> {

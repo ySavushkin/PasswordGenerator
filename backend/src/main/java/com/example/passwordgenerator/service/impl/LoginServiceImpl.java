@@ -5,6 +5,7 @@ import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.domain.entity.User;
 import com.example.passwordgenerator.repository.UserRepository;
 import com.example.passwordgenerator.service.LoginService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,14 @@ import java.util.Optional;
 public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Override
-    public ResponseDto loginUser(UserDto userDto) {
+    public ResponseDto loginUser(UserDto userDto, HttpServletResponse response) {
         Optional<User> user = userRepository.findUserByEmail(userDto.getEmail());
 
         if (user.isPresent() && user.get().getPasswordHash().equals(userDto.getPassword())) {
+            jwtService.generateToken(user.get().getEmail(), response);
             return new ResponseDto(true, "Login successful");
         } else {
             return new ResponseDto(false, "Bad request!");
