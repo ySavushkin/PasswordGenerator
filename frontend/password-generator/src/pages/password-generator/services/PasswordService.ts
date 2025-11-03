@@ -2,6 +2,7 @@ import { CookieTokens } from '../../../constants/CookieTokens';
 import Cookies from 'js-cookie';
 import { GetRecords, PasswordRecord, SaveRecord } from '../components/password-table/PasswordRecord';
 import { API_ROUTES } from '../../../constants/APIRoutes';
+import { ApiService } from './ApiService';
 
 type PasswordRequestData = {
     flags: number;
@@ -12,14 +13,15 @@ type PasswordResponse = {
     password: string;
 }
 
+const apiService = new ApiService();
+
 export async function fetchGeneratedPassword(
     url: string,
     request: PasswordRequestData,
 ): Promise<PasswordResponse> {
     try {
-        const response = await fetch(url, {
+        const response = await apiService.request(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(request),
         });
 
@@ -55,7 +57,7 @@ export async function fetchSavedPasswords(): Promise<GetRecords> {
 
         const url = `${API_ROUTES.passwordRecords}?${params.toString()}`;
 
-        const response = await fetch(url, {
+        const response = await apiService.request(url, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -75,7 +77,7 @@ export async function saveAndUploadPassword(
     try {
         const newRecord = request;
 
-        const response = await fetch(url, {
+        const response = await apiService.request(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newRecord),
@@ -93,14 +95,14 @@ export async function saveAndUploadPassword(
     }
 }
 
+
 export async function getSafetyPercent(
     url: string,
     password: string
 ): Promise<number> {
     try {
-        const response = await fetch(url, {
+        const response = await apiService.request(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(password),
         });
 

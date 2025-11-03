@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { CookieTokens } from '../../constants/CookieTokens';
+import { ApiService } from '../password-generator/services/ApiService';
 
 type AuthRequestData = {
     email: string;
@@ -13,12 +14,14 @@ export type AuthResponse = {
     message: string;
 };
 
+const apiService = new ApiService();
+
 export async function sendAuthRequest(
     url: string,
     data: AuthRequestData,
 ): Promise<AuthResponse> {
     try {
-        const response = await fetch(url, {
+        const response = await apiService.request(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
