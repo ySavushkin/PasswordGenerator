@@ -15,7 +15,7 @@ export  class ApiService {
 
         if (response.status === 403) {
             console.error("403 Forbidden – no access");
-            window.location.href = "/login";
+            window.location.href = "/auth/login";
             throw new Error("Forbidden");
         }
 
