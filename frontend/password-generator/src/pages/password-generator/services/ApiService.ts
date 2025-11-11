@@ -10,6 +10,7 @@ export  class ApiService {
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             ...options,
             headers,
+            credentials: "include"
         });
 
         if (response.status === 403) {
