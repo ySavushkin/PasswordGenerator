@@ -1,3 +1,5 @@
+import { RoutePaths } from "../../../router/RoutePaths";
+
 export  class ApiService {
     baseUrl: string = ""
 
@@ -15,7 +17,7 @@ export  class ApiService {
 
         if (response.status === 403) {
             console.error("403 Forbidden – no access");
-            window.location.href = "/auth/login";
+            window.location.href = RoutePaths.LOGIN;
             throw new Error("Forbidden");
         }
 
