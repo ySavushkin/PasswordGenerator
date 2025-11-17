@@ -16,6 +16,7 @@ import PasswordTable from './components/password-table/PasswordTable';
 import { PasswordRecord, SaveRecord } from './components/password-table/PasswordRecord';
 import { CookieTokens } from '../../constants/CookieTokens';
 import ProgressBar from './components/progress-bar/ProgressBar';
+import Tooltip from './components/password-llm/AssistentWindow';
 
 const PasswordGenerator: React.FC = () => {
     const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
@@ -184,7 +185,10 @@ const PasswordGenerator: React.FC = () => {
                                 type="button"
                                 className="button offset-1 col-3"
                                 onClick={handleSavePassword}>Save</button>
-                        </div>
+                            </div>
+                            <div className="AssistentWindow">
+                                <Tooltip/>
+                            </div>
                     </div>
                 </div>
 
