@@ -1,0 +1,8 @@
+.offcanvas-my {
+    position: fixed;
+    z-index: 20000;
+}
+
+.offcanvas.show {
+    z-index: 20000 !important; 
+}

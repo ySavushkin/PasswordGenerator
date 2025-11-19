@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./StyledWrapper.css"
+import "./Offcanvas.css"
 
 const Tooltip: React.FC = () => {
+  const [showChat, setShowChat] = useState(false)
+
+  const handleOpenChat = () => setShowChat(true)
+  const handleCloseChat = () => setShowChat(false)
   return (
     <div className="styled-wrapper">
-      <div className="tooltip-container">
+      <div 
+        className="tooltip-container"
+        onClick={handleOpenChat}
+        style={{ cursor: 'pointer' }}
+      >
         <span className="tooltip">Hello!...</span>
         <span className="text">Need help?</span>
         <svg id="Calque_1" viewBox="0 0 377 270" xmlns="http://www.w3.org/2000/svg">
@@ -162,6 +171,35 @@ const Tooltip: React.FC = () => {
           </g>
         </svg>
       </div>
+        <div 
+        className={`offcanvas offcanvas-my offcanvas-end ${showChat ? 'show' : ''}`}
+        tabIndex={-1}
+        id="chatOffcanvas"
+        aria-labelledby="chatOffcanvasLabel"
+        style={{ visibility: showChat ? 'visible' : 'hidden' }}
+      >
+        <div className="offcanvas-header">
+          <h5 id="chatOffcanvasLabel">Chat Assistant</h5>
+          <button 
+            type="button" 
+            className="btn-close text-reset" 
+            onClick={handleCloseChat}
+            aria-label="Закрыть"
+          ></button>
+        </div>
+        <div className="offcanvas-body">
+          
+          <p>Здесь появится чат...</p>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      {showChat && (
+        <div 
+          className="offcanvas-backdrop fade show" 
+          onClick={handleCloseChat}
+        ></div>
+      )}
     </div>
   );
 }
