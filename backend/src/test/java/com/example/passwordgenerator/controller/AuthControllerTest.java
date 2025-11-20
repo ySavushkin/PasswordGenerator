@@ -24,7 +24,7 @@ class AuthControllerTest {
     @BeforeEach
     void setUp() {
         loginService = Mockito.mock(LoginService.class);
-        AuthController authController = new AuthController(loginService, jwtService);
+        AuthController authController = new AuthController(loginService, jwtService, passwordEncoder);
         mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
         objectMapper = new ObjectMapper();
     }
