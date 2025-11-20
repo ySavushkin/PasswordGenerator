@@ -24,9 +24,7 @@ public class JwtService {
     @Value("${jwt.token.expires}")
     private Long jwtExpiresMinutes;
 
-    private Claims claims;
-
-    public void generateToken(String email, HttpServletResponse response){
+    public void generateToken(String email, HttpServletResponse response) {
         String jwt = Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -36,38 +34,42 @@ public class JwtService {
 
         Cookie cookie = new Cookie("JWT", jwt);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false); // true только на https
         cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60);
+        cookie.setMaxAge((int) (jwtExpiresMinutes * 60));
         response.addCookie(cookie);
     }
 
-    public String getJwtFromCookie(HttpServletRequest request){
+    public String getJwtFromCookie(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, "JWT");
-        if(cookie != null){
-            return cookie.getValue();
-        }
-        return null;
-
+        return cookie != null ? cookie.getValue() : null;
     }
-    public void validateToken(String token) throws JwtException {
 
+    public boolean validateToken(String token) {
         try {
-            claims = Jwts.parser()
+            Jwts.parser()
                     .verifyWith(getSignInKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-
-
-        } catch(JwtException e){
-            throw new JwtException(e.getMessage());
+                    .parseSignedClaims(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
         }
     }
-    public void removeTokenFromCookie(HttpServletResponse response){
+
+    public String extractEmail(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.getSubject();
+    }
+
+    public void removeTokenFromCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("JWT", null);
         cookie.setPath("/");
-
+        cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
 
@@ -75,9 +77,4 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(this.secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    public String extractEmail() {
-        return claims.getSubject();
-    }
-
 }
