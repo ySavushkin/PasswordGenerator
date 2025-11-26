@@ -24,7 +24,7 @@ export default function Offcanvas() {
         style={{ visibility: show ? 'visible' : 'hidden' }}
       >
         <div className="offcanvas-header">
-          <h5 id="offcanvasRightLabel">Offcanvas справа</h5>
+          <h5 id="offcanvasRightLabel">Offcanvas зправа</h5>
           <button 
             type="button" 
             className="btn-close text-reset" 
@@ -33,7 +33,7 @@ export default function Offcanvas() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          Содержимое offcanvas
+          Склад offcanvas
         </div>
       </div>
 

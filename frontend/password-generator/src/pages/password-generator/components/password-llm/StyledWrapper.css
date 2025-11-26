@@ -60,7 +60,7 @@
   }
 
   .tooltip::after {
-    content: "Hello!👋";
+    content: "Привіт!👋";
     display: inline-block;
     position: absolute;
     width: 100%;
