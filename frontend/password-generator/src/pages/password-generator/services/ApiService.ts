@@ -1,6 +1,6 @@
 import { RoutePaths } from "../../../router/RoutePaths";
 
-export  class ApiService {
+export class ApiService {
     baseUrl: string = ""
 
     async request(endpoint: string, options: RequestInit = {}) : Promise<any> {

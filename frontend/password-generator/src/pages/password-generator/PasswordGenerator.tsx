@@ -146,14 +146,14 @@ const PasswordGenerator: React.FC = () => {
                                     className="btn"
                                     type="button"
                                     onClick={handleCopyPassword}
-                                    title="Копировать">
+                                    title="Копіювати">
                                     <FaCopy />
                                 </button>
                                 <button
                                     className="btn"
                                     type="button"
                                     onClick={handleRefreshPassword}
-                                    title="Обновить">
+                                    title="Оновити">
                                     <FaSyncAlt />
                                 </button>
                             </div>

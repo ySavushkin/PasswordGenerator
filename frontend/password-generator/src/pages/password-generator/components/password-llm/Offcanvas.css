@@ -6,3 +6,10 @@
 .offcanvas.show {
     z-index: 20000 !important; 
 }
+
+.input-row button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none; /* ← головне */
+  background-color: #ccc;
+}

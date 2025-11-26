@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import "./StyledWrapper.css"
 import "./Offcanvas.css"
 import "./chat.css"
+import { ApiService } from '../../services/ApiService';
+import { RoutePaths } from '../../../../router/RoutePaths';
+import { API_ROUTES } from '../../../../constants/APIRoutes';
+
+const apiService = new ApiService();
 
 interface Message {
   role: 'user' | 'assistant';
@@ -14,44 +19,42 @@ const Tooltip: React.FC = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleOpenChat = () => setShowChat(true)
-  const handleCloseChat = () => setShowChat(false)
+  const handleOpenChat = () => setShowChat(true);
+  const handleCloseChat = () => setShowChat(false);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
+    if (loading) return;
 
-    const userMessage: Message = { role: "user", content: input };
+    const userMessage = input;
+    setInput("");
 
-    // додаємо моє повідомлення у чат
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
     setLoading(true);
 
     try {
-      const response = await fetch("https://your-backend.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: userMessage.content })
+      const response = await apiService.request(API_ROUTES.chat, {
+          method: 'POST',
+          body: JSON.stringify({
+            prompt: userMessage
+          })
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Помилка запиту");
+      }
 
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: data.response
-      };
+      const aiText = await response.text();
 
-      // додаємо відповідь LLM
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (err) {
-      console.error(err);
+      setMessages(prev => [...prev, { role: "assistant", content: aiText }]);
+
+    } catch (error) {
       setMessages(prev => [
         ...prev,
         { role: "assistant", content: "Сталася помилка 😞" }
       ]);
-    } finally {
-      setLoading(false);
-    }
+    } 
+    setLoading(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -235,44 +238,38 @@ const Tooltip: React.FC = () => {
               type="button" 
               className="btn-close text-reset" 
               onClick={handleCloseChat}
-              aria-label="Закрыть"
+              aria-label="Закрити"
             ></button>
           </div>
 
           <div className="offcanvas-body">
-
-            {/* 👉 Сам чат */}
             <div className="chat-window">
-              
-              <div className="messages">
-                {messages.map((msg, i) => (
-                  <div 
-                    key={i}
-                    className={`message ${msg.role === "user" ? "user" : "assistant"}`}
-                  >
-                    {msg.content}
-                  </div>
-                ))}
+            <div className="messages">
+              {messages.map((msg, i) => (
+                <div 
+                  key={i}
+                  className={`message ${msg.role === "user" ? "user" : "assistant"}`}
+                >
+                  {msg.content}
+                </div>
+              ))}
 
-                {loading && <div className="loading">ИИ думает...</div>}
-              </div>
-
-              {/* Ввід повідомлення + кнопка */}
-              <div className="input-row">
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Напиши запит…"
-                />
-                <button onClick={sendMessage}>Відправити</button>
-              </div>
-
+              {loading && <div className="loading">ШІ думає...</div>}
             </div>
 
+            <div className="input-row">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Напиши запит…"
+              />
+              <button disabled={loading} onClick={sendMessage}>Відправити</button>
+            </div>
           </div>
         </div>
-        </div>
+      </div>
+    </div>
   );
 };
 
