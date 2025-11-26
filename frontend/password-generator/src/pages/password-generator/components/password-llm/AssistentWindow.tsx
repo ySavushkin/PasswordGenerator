@@ -1,12 +1,63 @@
 import React, { useState } from 'react';
 import "./StyledWrapper.css"
 import "./Offcanvas.css"
+import "./chat.css"
+
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 const Tooltip: React.FC = () => {
-  const [showChat, setShowChat] = useState(false)
+  const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleOpenChat = () => setShowChat(true)
   const handleCloseChat = () => setShowChat(false)
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    const userMessage: Message = { role: "user", content: input };
+
+    // додаємо моє повідомлення у чат
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://your-backend.com/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: userMessage.content })
+      });
+
+      const data = await response.json();
+
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: data.response
+      };
+
+      // додаємо відповідь LLM
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (err) {
+      console.error(err);
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: "Сталася помилка 😞" }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") sendMessage();
+  };
+
   return (
     <div className="styled-wrapper">
       <div 
@@ -172,36 +223,57 @@ const Tooltip: React.FC = () => {
         </svg>
       </div>
         <div 
-        className={`offcanvas offcanvas-my offcanvas-end ${showChat ? 'show' : ''}`}
-        tabIndex={-1}
-        id="chatOffcanvas"
-        aria-labelledby="chatOffcanvasLabel"
-        style={{ visibility: showChat ? 'visible' : 'hidden' }}
-      >
-        <div className="offcanvas-header">
-          <h5 id="chatOffcanvasLabel">👾ШІ-асистент👾</h5>
-          <button 
-            type="button" 
-            className="btn-close text-reset" 
-            onClick={handleCloseChat}
-            aria-label="Закрыть"
-          ></button>
-        </div>
-        <div className="offcanvas-body">
-          
-          <p>Тут з'явиться чат...</p>
-        </div>
-      </div>
+          className={`offcanvas offcanvas-my offcanvas-end ${showChat ? 'show' : ''}`}
+          tabIndex={-1}
+          id="chatOffcanvas"
+          aria-labelledby="chatOffcanvasLabel"
+          style={{ visibility: showChat ? 'visible' : 'hidden' }}
+        >
+          <div className="offcanvas-header">
+            <h5 id="chatOffcanvasLabel">👾ШІ-асистент👾</h5>
+            <button 
+              type="button" 
+              className="btn-close text-reset" 
+              onClick={handleCloseChat}
+              aria-label="Закрыть"
+            ></button>
+          </div>
 
-      {/* Backdrop */}
-      {showChat && (
-        <div 
-          className="offcanvas-backdrop fade show" 
-          onClick={handleCloseChat}
-        ></div>
-      )}
-    </div>
+          <div className="offcanvas-body">
+
+            {/* 👉 Сам чат */}
+            <div className="chat-window">
+              
+              <div className="messages">
+                {messages.map((msg, i) => (
+                  <div 
+                    key={i}
+                    className={`message ${msg.role === "user" ? "user" : "assistant"}`}
+                  >
+                    {msg.content}
+                  </div>
+                ))}
+
+                {loading && <div className="loading">ИИ думает...</div>}
+              </div>
+
+              {/* Ввід повідомлення + кнопка */}
+              <div className="input-row">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Напиши запит…"
+                />
+                <button onClick={sendMessage}>Відправити</button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        </div>
   );
-}
+};
 
 export default Tooltip;

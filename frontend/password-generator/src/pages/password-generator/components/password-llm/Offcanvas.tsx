@@ -3,7 +3,6 @@ import { useState } from 'react'
 export default function Offcanvas() {
   const [show, setShow] = useState(false)
 
-  const handleShow = () => setShow(true)
   const handleClose = () => setShow(false)
 
   return (
