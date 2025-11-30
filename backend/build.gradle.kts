@@ -37,7 +37,7 @@ dependencies {
 
     implementation("org.postgresql:postgresql:42.7.5")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
-    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+    implementation("org.hibernate.validator:hibernate-validator")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -57,6 +57,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
     implementation("org.springframework.security:spring-security-core:6.4.5")
 
+    implementation("com.google.genai:google-genai:1.28.0")
 }
 
 tasks.withType<Test> {
