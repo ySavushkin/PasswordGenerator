@@ -29,6 +29,7 @@ public class WebConfig {
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/passwordGenerator/auth/**").permitAll()
+//                        .requestMatchers("/**").permitAll());
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

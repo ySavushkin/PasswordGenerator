@@ -28,6 +28,12 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
+    @Column(nullable = false, length = 64)
+    private String encryptionSalt;
+
+    @Column(nullable = false)
+    private Integer kdfIterations;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

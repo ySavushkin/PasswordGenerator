@@ -16,6 +16,8 @@ public class SavePasswordDTO {
     @NotNull
     private String email;
 
+    private String masterPassword;
+
     @NotNull
     private String password;
 

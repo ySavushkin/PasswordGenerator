@@ -25,8 +25,11 @@ public class Password {
     @JsonIgnore
     private User user;
 
-    @Column(nullable = false)
-    private String passwordHash;
+    @Column(nullable = false, length = 512)
+    private String encryptedPassword;
+
+    @Column(nullable = false, length = 64)
+    private String iv;
 
     @Column(nullable = false, length = 255)
     private String source;

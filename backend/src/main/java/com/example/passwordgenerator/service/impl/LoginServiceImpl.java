@@ -4,6 +4,8 @@ import com.example.passwordgenerator.dto.ResponseDto;
 import com.example.passwordgenerator.dto.UserDto;
 import com.example.passwordgenerator.domain.entity.User;
 import com.example.passwordgenerator.repository.UserRepository;
+import com.example.passwordgenerator.service.AesEncryptionService;
+import com.example.passwordgenerator.service.KeyDerivationService;
 import com.example.passwordgenerator.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final KeyDerivationService keyDerivationService;
+    private final AesEncryptionService aesEncryptionService;
 
     @Override
     public ResponseDto loginUser(UserDto userDto, HttpServletResponse response) {
@@ -43,6 +47,8 @@ public class LoginServiceImpl implements LoginService {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
+        user.setEncryptionSalt(keyDerivationService.generateSaltBase64(16));
+        user.setKdfIterations(200_000);
 
         userRepository.save(user);
         return new ResponseDto(true, "User registered successfully");

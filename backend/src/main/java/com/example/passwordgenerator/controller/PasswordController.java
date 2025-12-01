@@ -8,6 +8,7 @@ import com.example.passwordgenerator.service.PasswordService;
 import com.example.passwordgenerator.service.UserService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.example.passwordgenerator.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +43,18 @@ public class PasswordController {
             return "User not found";
         }
 
-        Password newPassword = new Password();
-        newPassword.setPasswordHash(savePasswordDTO.getPassword());
-        newPassword.setUser(currentUser.get());
-        newPassword.setSource(savePasswordDTO.getNote());
-
-        passwordService.savePassword(newPassword);
+        passwordService.savePassword(
+                currentUser.get(),
+                savePasswordDTO.getMasterPassword(),
+                savePasswordDTO.getPassword(),
+                savePasswordDTO.getNote()
+        );
 
         return "Success";
     }
 
-    @GetMapping("/email")
-    public List<PasswordRecord> getPasswordsByUser(@RequestParam String email) {
+    @GetMapping("/list")
+    public List<PasswordRecord> getPasswords(@RequestParam String email, @RequestParam String masterPassword) {
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (userOptional.isEmpty()) {
@@ -62,19 +63,10 @@ public class PasswordController {
         }
 
         User user = userOptional.get();
-        List<Password> passwords = passwordService.getPasswordsByUser(user);
-
-        List<PasswordRecord> passwordRecords = new ArrayList<>();
-        for(Password password : passwords) {
-            passwordRecords.add(new PasswordRecord(password.getPasswordHash(), password.getSource()));
-        }
-
-        if (passwordRecords.isEmpty()) {
-            System.out.println("collection empty");
-            return Collections.emptyList();
-        }
-
-        return passwordRecords;
+        return passwordService.getPasswords(user, masterPassword)
+                .stream()
+                .map(dp -> new PasswordRecord(dp.getPassword(), dp.getSource()))
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/strength")
