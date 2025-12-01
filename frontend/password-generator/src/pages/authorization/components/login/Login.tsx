@@ -6,6 +6,7 @@ import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { ValidationService } from '../../ValidationService';
+import { useMasterPassword } from '../../../../context/MasterPasswordContext.tsx';
 
 interface UserData {
     email: string;
@@ -14,6 +15,8 @@ interface UserData {
 
 const LoginPage: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
+
+    const { setMasterPassword } = useMasterPassword();
 
     const [userData, setUserData] = useState<UserData>({
         email: '',
@@ -65,6 +68,8 @@ const LoginPage: React.FC = () => {
             'Login successful!',
             'Login failed! Try again!',
             userData.email,
+            userData.password,
+            setMasterPassword
         );
     };
 

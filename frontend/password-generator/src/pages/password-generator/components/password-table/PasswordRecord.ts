@@ -1,5 +1,6 @@
 export interface SaveRecord {
     email: string;
+    masterPassword: string;
     password: string;
     note?: string;
 }

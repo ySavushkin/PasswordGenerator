@@ -50,6 +50,8 @@ export function useHandleAuthResult() {
         authSuccessMessage: string,
         authFailedMessage: string,
         token: string,
+        masterPassword: string,
+        setMasterPassword: (v: string) => void
     ): void => {
         if (result.success && result.message === successMessage) {
             if (token) {
@@ -59,6 +61,8 @@ export function useHandleAuthResult() {
                     sameSite: 'strict',
                 });
             }
+
+            setMasterPassword(masterPassword);
 
             showNotification(authSuccessMessage, 'success');
             setTimeout(() => navigate(navigateTo), 1500);

@@ -17,8 +17,10 @@ import { PasswordRecord, SaveRecord } from './components/password-table/Password
 import { CookieTokens } from '../../constants/CookieTokens';
 import ProgressBar from './components/progress-bar/ProgressBar';
 import Tooltip from './components/password-llm/AssistentWindow';
+import {useMasterPassword} from "../../context/MasterPasswordContext.tsx";
 
 const PasswordGenerator: React.FC = () => {
+    const { masterPassword } = useMasterPassword();
     const tableRef = useRef<{ addRecord: (record: PasswordRecord) => void }>(null);
 
     const [generatedPassword, setGeneratedPassword] = useState<string>('');
@@ -53,6 +55,7 @@ const PasswordGenerator: React.FC = () => {
 
         const newRecord: SaveRecord = {
             email: userKey,
+            masterPassword: masterPassword!,
             password: generatedPassword,
             note: passwordNote,
         };

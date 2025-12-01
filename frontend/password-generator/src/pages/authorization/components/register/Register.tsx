@@ -7,9 +7,12 @@ import { RoutePaths } from '../../../../router/RoutePaths';
 import { useHandleAuthResult, sendAuthRequest } from '../../AuthService';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
 import { ValidationService } from '../../ValidationService';
+import { useMasterPassword } from '../../../../context/MasterPasswordContext.tsx';
 
 const RegistrationForm: React.FC = () => {
     const handleAuthResult = useHandleAuthResult();
+
+    const { setMasterPassword } = useMasterPassword();
 
     const [userData, setUserData] = useState<UserData>({
         userName: '',
@@ -89,6 +92,8 @@ const RegistrationForm: React.FC = () => {
             'Registration successful!',
             'Registration error. Please try again.',
             userData.email,
+            userData.password,
+            setMasterPassword
         );
     };
 

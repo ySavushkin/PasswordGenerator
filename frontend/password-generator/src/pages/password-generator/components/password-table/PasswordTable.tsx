@@ -3,10 +3,12 @@ import './PasswordTable.css';
 import { PasswordRecord } from './PasswordRecord';
 import { fetchSavedPasswords } from '../../services/PasswordService';
 import Pagination from '../pagination/Pagintation';
+import { useMasterPassword } from '../../../../context/MasterPasswordContext.tsx';
+
 
 const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
     const itemsPerPage: number = 5;
-
+    const { masterPassword } = useMasterPassword();
     const [currentPage, setCurrentPage] = useState(1);
     const [passwordRecords, setPasswordRecords] = useState<PasswordRecord[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
@@ -23,9 +25,10 @@ const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
     };
 
     useEffect(() => {
+        if (!masterPassword) return;
         const loadData = async () => {
             try {
-                const data = await fetchSavedPasswords();
+                const data = await fetchSavedPasswords(masterPassword);
                 console.log('Fetched data: ' + data);
                 if (Array.isArray(data))
                     setPasswordRecords(data);
@@ -39,7 +42,7 @@ const PasswordTable = forwardRef(function PasswordTable(_props, ref) {
         };
 
         loadData();
-    }, []);
+    }, [masterPassword]);
 
     useEffect(() => {
         const total = Math.ceil(passwordRecords.length / itemsPerPage);

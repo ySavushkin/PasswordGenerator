@@ -37,37 +37,30 @@ export async function fetchGeneratedPassword(
     }
 }
 
-export async function fetchSavedPasswords(): Promise<GetRecords> {
+export async function fetchSavedPasswords(masterPassword: string): Promise<GetRecords> {
     try {
         const currentEmail = Cookies.get(CookieTokens.userToken);
-
-        if (currentEmail === undefined) {
-            throw new Error('User is not logged in');
-        };
-
-        const requestedEmail = new URLSearchParams(window.location.search).get('email');
-
-        if (requestedEmail && requestedEmail !== currentEmail) {
-            throw new Error('Access denied');
+        if (!currentEmail) {
+            throw new Error("User is not logged in");
         }
 
         const params = new URLSearchParams({
             email: currentEmail,
+            masterPassword: masterPassword
         });
 
         const url = `${API_ROUTES.passwordRecords}?${params.toString()}`;
 
         const response = await apiService.request(url, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            method: "GET"
         });
-        const data = (await response.json()) as GetRecords;
-        return data;
+
+        return await response.json();
     } catch (error) {
-        console.error('Failed to load:', error);
+        console.error("Failed to load passwords:", error);
         throw error;
     }
-};
+}
 
 export async function saveAndUploadPassword(
     url: string,
