@@ -5,6 +5,7 @@ import "./chat.css"
 import { ApiService } from '../../services/ApiService';
 import { RoutePaths } from '../../../../router/RoutePaths';
 import { API_ROUTES } from '../../../../constants/APIRoutes';
+import ReactMarkdown from 'react-markdown';
 
 const apiService = new ApiService();
 
@@ -250,7 +251,11 @@ const Tooltip: React.FC = () => {
                   key={i}
                   className={`message ${msg.role === "user" ? "user" : "assistant"}`}
                 >
-                  {msg.content}
+                {msg.role === "assistant" ? (
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               ))}
 
