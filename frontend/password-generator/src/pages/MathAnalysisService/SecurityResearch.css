@@ -1,0 +1,53 @@
+/* Основний контейнер сторінки */
+.research-container {
+    padding: 30px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.research-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* Обгортка для таблиці */
+.table-wrapper {
+    margin: 20px 0;
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.log-value {
+    font-weight: bold;
+    color: #1a73e8;
+}
+
+/* Контейнер для графіка */
+.chart-container {
+    height: 400px;
+    width: 100%;
+    margin-top: 30px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart-subtitle {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+/* Текст примітки */
+.research-note {
+    margin-top: 20px;
+    font-size: 14px;
+    font-style: italic;
+    color: #666;
+    line-height: 1.5;
+}

@@ -3,4 +3,5 @@ export enum RoutePaths {
     LOGIN = '/auth/login',
     PASSWORD_GENERATOR = '/password-generator',
     CATCH_ALL = '*',
+    RESEARCH = '/research',
 }

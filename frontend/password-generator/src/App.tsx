@@ -3,6 +3,7 @@ import './App.css';
 import AppRouter from './router/AppRouter';
 import { RoutePaths } from './router/RoutePaths';
 
+
 function App() {
     return (
         <BrowserRouter>
