@@ -1,53 +1,55 @@
-/* Основний контейнер сторінки */
 .research-container {
-    padding: 30px;
-    background-color: #fdfdfd;
-    border-radius: 12px;
-    max-width: 1000px;
-    margin: 0 auto;
+  padding: 24px;
+  background-color: #1a202c; /* темний фон як у тебе */
+  color: white;
+  border-radius: 12px;
 }
 
 .research-title {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-/* Обгортка для таблиці */
-.table-wrapper {
-    margin: 20px 0;
-    overflow-x: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.research-table {
+  width: 100%;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+  border: 1px solid #4a5568;
 }
 
-.log-value {
-    font-weight: bold;
-    color: #1a73e8;
+.research-table th, .research-table td {
+  padding: 10px;
+  border: 1px solid #4a5568;
+  text-align: center;
 }
 
-/* Контейнер для графіка */
-.chart-container {
-    height: 400px;
-    width: 100%;
-    margin-top: 30px;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.research-table thead {
+  background-color: #2d3748;
 }
 
-.chart-subtitle {
-    text-align: center;
-    margin-bottom: 15px;
-    color: #34495e;
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* два графіки в ряд */
+  gap: 20px;
 }
 
-/* Текст примітки */
-.research-note {
-    margin-top: 20px;
-    font-size: 14px;
-    font-style: italic;
-    color: #666;
-    line-height: 1.5;
+.chart-card {
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  height: 350px;
+}
+
+.chart-card h3 {
+  color: black;
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
 }

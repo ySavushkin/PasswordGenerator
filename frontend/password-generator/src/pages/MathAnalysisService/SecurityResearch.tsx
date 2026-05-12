@@ -4,72 +4,89 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import './SecurityResearch.css';
 
 const SecurityResearch: React.FC = () => {
-  const data = useMemo(() => {
-    const rawData = MathAnalysisService.generateLengthExperiment(26);
-    return rawData.map(item => ({
-      ...item,
-      // Обчислюємо десятковий логарифм від секунд (Log10)
-      // Якщо секунд менше 1, ставимо 0, щоб не було помилок з log(0)
-      logSeconds: item.seconds > 0 ? Math.log10(item.seconds) : 0
-    }));
-  }, []);
+  const data = useMemo(() => MathAnalysisService.generateLengthExperiment(26), []);
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', color: '#333' }}>
-      <h2 style={{ textAlign: 'center' }}>Математичне дослідження (Логарифмічна шкала)</h2>
+    <div className="research-container">
+      <h2 className="research-title">Аналіз криптостійкості: Порівняння масштабів</h2>
       
-      {/* Таблиця залишається для звіту */}
-      <div style={{ marginBottom: '30px', overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#eee' }}>
-              <th style={{ padding: '10px', border: '1px solid #ddd' }}>L</th>
-              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Log10(Tavg)</th>
-              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Форматований час</th>
+      {/* Таблиця з даними */}
+      <table className="research-table">
+        <thead>
+          <tr>
+            <th>Довжина (L)</th>
+            <th>Комбінації (N)</th>
+            <th>Log10(Tavg)</th>
+            <th>Середній час (Tavg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(row => (
+            <tr key={row.length}>
+              <td>{row.length}</td>
+              <td>{row.combinations.toExponential(2)}</td>
+              <td style={{ color: '#4fd1c5', fontWeight: 'bold' }}>{row.logSeconds}</td>
+              <td>{row.formattedTime}</td>
             </tr>
-          </thead>
-          <tbody>
-            {data.map(row => (
-              <tr key={row.length}>
-                <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>{row.length}</td>
-                <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>{row.logSeconds.toFixed(2)}</td>
-                <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>{row.formattedTime}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="charts-grid">
+        
+        {/* Графік 1: Експоненціальний */}
+        <div className="chart-card">
+          <h3 style={{ color: '#e53e3e' }}>1. Лінійний масштаб (Експонента)</h3>
+          <p style={{ color: '#666', fontSize: '12px', textAlign: 'center', marginBottom: '10px' }}>
+            Демонструє вибухове зростання часу зламу
+          </p>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data} margin={{ top: 10, right: 30, left: 20, bottom: 40 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="length">
+                <Label value="Довжина пароля (L)" offset={-25} position="insideBottom" />
+              </XAxis>
+              <YAxis>
+                <Label value="Час (секунди)" angle={-90} position="insideLeft" style={{ textAnchor: 'middle' }} />
+              </YAxis>
+              <Tooltip formatter={(v: any) => [v.toExponential(2), "Секунди"]} />
+              <Legend verticalAlign="top" />
+              <Line name="Tavg (лінійний)" type="monotone" dataKey="seconds" stroke="#8884d8" strokeWidth={3} dot={{ r: 6 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Графік 2: Логарифмічний */}
+        <div className="chart-card">
+          <h3 style={{ color: '#38a169' }}>2. Аналітичний масштаб (Логарифм)</h3>
+          <p style={{ color: '#666', fontSize: '12px', textAlign: 'center', marginBottom: '10px' }}>
+            Візуалізує стабільний приріст стійкості
+          </p>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data} margin={{ top: 10, right: 30, left: 20, bottom: 40 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="length">
+                <Label value="Довжина пароля (L)" offset={-25} position="insideBottom" />
+              </XAxis>
+              <YAxis>
+                <Label value="Стійкість (Log10)" angle={-90} position="insideLeft" style={{ textAnchor: 'middle' }} />
+              </YAxis>
+              <Tooltip formatter={(v: any) => [v, "Порядок (Log10)"]} />
+              <Legend verticalAlign="top" />
+              <Line name="Log10(Tavg)" type="monotone" dataKey="logSeconds" stroke="#48bb78" strokeWidth={3} dot={{ r: 6 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
       </div>
 
-      {/* Логарифмічний графік */}
-      <div style={{ height: '400px', width: '100%', backgroundColor: '#fff', padding: '10px', borderRadius: '5px' }}>
-        <h4 style={{ textAlign: 'center' }}>Залежність Log10(Час зламу) від довжини L</h4>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="length">
-              <Label value="Довжина пароля (L)" offset={-10} position="insideBottom" />
-            </XAxis>
-            <YAxis>
-              <Label value="log10(секунди)" angle={-90} position="insideLeft" />
-            </YAxis>
-            <Tooltip formatter={(value: any) => [Number(value).toFixed(2), "Log10(Tavg)"]} />
-            <Legend verticalAlign="top" height={36}/>
-            <Line 
-              name="Логарифм часу зламу" 
-              type="monotone" 
-              dataKey="logSeconds" 
-              stroke="#28a745" 
-              strokeWidth={3} 
-              dot={{ r: 6 }} 
-            />
-          </LineChart>
-        </ResponsiveContainer>
+      <div className="research-summary-box" style={{ marginTop: '30px', padding: '15px', borderLeft: '4px solid #4fd1c5', backgroundColor: '#2d3748' }}>
+        <p style={{ margin: 0, fontSize: '14px' }}>
+          <strong>Висновок:</strong> Обидва графіки базуються на одній вибірці даних. 
+          Лівий графік ілюструє <strong>складність для атакуючого</strong>, а правий — 
+          <strong>математичну закономірність</strong> зростання захищеності системи.
+        </p>
       </div>
-      
-      <p style={{ marginTop: '20px', fontSize: '14px', fontStyle: 'italic', lineHeight: '1.5' }}>
-        * <b>Пояснення для звіту:</b> Пряма лінія на логарифмічному графіку свідчить про експоненціальну залежність складності від довжини пароля[cite: 70]. 
-        Кожна одиниця на осі Y означає збільшення часу зламу в 10 разів.
-      </p>
     </div>
   );
 };
